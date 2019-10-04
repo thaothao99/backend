@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { GraphQLModule } from '@nestjs/graphql';
 import { UserModule } from './modules/user/user.module';
+import { getMetadataArgsStorage } from 'typeorm'
 
 @Module({
   imports: [
@@ -18,11 +19,10 @@ import { UserModule } from './modules/user/user.module';
       playground: true,
     }),
     TypeOrmModule.forRoot({
-      type: 'mongodb',
-      host: "localhost",
-      port: 27017,
-      database: "test",
-      entities: [join(__dirname, '**/**.entity{.ts,.js}')],
+      type: "mongodb",
+      url:"mongodb+srv://sa:qsWGRPWsrfwipbei@cluster0-fpeww.mongodb.net/admin?retryWrites=true&w=majority",
+      database: "test", 
+			entities: getMetadataArgsStorage().tables.map(tbl => tbl.target),
       synchronize: true,
       useNewUrlParser: true,
       logging: true,
