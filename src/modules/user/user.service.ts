@@ -25,7 +25,9 @@ export class UserService {
   // async update(_id: string, input: UserInput): Promise<User> {
   //   return await this.userRepository.update({ _id });
   // }
-
+  async deleteOne(_id: string): Promise<boolean> {
+    return (await this.userRepository.deleteOne({_id})) ? true : false;
+  }
   async deleteAll(): Promise<boolean> {
     return (await this.userRepository.deleteMany({})) ? true : false;
   }

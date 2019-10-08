@@ -30,6 +30,10 @@ export class UserResolver {
   // async updateUser(@Args('_id') _id: string, @Args('input') input: UserInput) {
   //   return await this.userService.update(_id, input);
   // }
+  @Mutation(() => Boolean)
+  async deleteUser(@Args('_id') _id: string) {
+    return await this.userService.deleteOne(_id);
+  }
 
   @Mutation(() => Boolean)
   async deleteAll() {
