@@ -8,7 +8,7 @@ export class UserResolver {
 
   @Query(() => String)
   async hello() {
-    return 'world 1';
+    return 'world';
   }
 
   @Query(() => [User])
