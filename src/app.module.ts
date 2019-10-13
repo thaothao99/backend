@@ -5,7 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { GraphQLModule } from '@nestjs/graphql';
 import { UserModule } from './modules/user/user.module';
-import { getMetadataArgsStorage } from 'typeorm'
+// import { getMetadataArgsStorage } from 'typeorm'
+import { TypeormModule } from './config/typeorm/typeorm.module'
+import { TypeormService } from './config/typeorm/typeorm.service'
 
 @Module({
   imports: [
@@ -18,7 +20,10 @@ import { getMetadataArgsStorage } from 'typeorm'
       debug: false,
       playground: true,
     }),
-    TypeOrmModule.forRoot({
+    TypeOrmModule.forRootAsync({
+			useClass: TypeormService
+		}),
+    /* TypeOrmModule.forRoot({
       type: "mongodb",
       url:"mongodb+srv://sa:qsWGRPWsrfwipbei@cluster0-fpeww.mongodb.net/admin?retryWrites=true&w=majority",
       database: "test", 
@@ -26,8 +31,9 @@ import { getMetadataArgsStorage } from 'typeorm'
       synchronize: true,
       useNewUrlParser: true,
       logging: true,
-    }),
+    }), */
     UserModule,
+    TypeormModule
   ],
   controllers: [AppController],
   providers: [AppService],
