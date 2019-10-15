@@ -1,10 +1,14 @@
-import { Entity, Column, ObjectID, ObjectIdColumn } from 'typeorm';
+import { Entity, Column, ObjectID, ObjectIdColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
+import * as uuid from 'uuid';
+import * as bcrypt from 'bcryptjs';
 
 export class UserInput {
   username: string;
   password: string;
 }
-
+export class LoginResponse {
+  token: string;
+}
 export abstract class IMutation {
   abstract createUser(input: UserInput): User | Promise<User>;
 
@@ -27,4 +31,15 @@ export class User {
   username: string;
   @Column()
   password: string;
+  @BeforeInsert()
+
+  async b4register() {
+    this._id = await uuid.v4();
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+
+  @BeforeUpdate()
+  async b4update() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
 }

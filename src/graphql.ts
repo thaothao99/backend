@@ -10,6 +10,10 @@ export class UserInput {
     password: string;
 }
 
+export class LoginResponse {
+    token: string;
+}
+
 export abstract class IMutation {
     abstract createUser(input: UserInput): User | Promise<User>;
 
@@ -18,6 +22,8 @@ export abstract class IMutation {
     abstract deleteUser(_id: string): boolean | Promise<boolean>;
 
     abstract deleteAll(): boolean | Promise<boolean>;
+
+    abstract login(input: UserInput): LoginResponse | Promise<LoginResponse>;
 }
 
 export abstract class IQuery {
