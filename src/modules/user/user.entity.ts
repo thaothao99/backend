@@ -1,4 +1,4 @@
-import { Entity, Column, ObjectID, ObjectIdColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
+import { Entity, Column, ObjectIdColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
 import * as uuid from 'uuid';
 import * as bcrypt from 'bcryptjs';
 
@@ -26,15 +26,15 @@ export abstract class IQuery {
 @Entity()
 export class User {
   @ObjectIdColumn()
-  _id: ObjectID;
+  _id: string;
   @Column()
   username: string;
   @Column()
   password: string;
-  @BeforeInsert()
 
+  @BeforeInsert()
   async b4register() {
-    this._id = await uuid.v4();
+    this._id = uuid.v4();
     this.password = await bcrypt.hash(this.password, 10);
   }
 
@@ -42,4 +42,5 @@ export class User {
   async b4update() {
     this.password = await bcrypt.hash(this.password, 10);
   }
+
 }
