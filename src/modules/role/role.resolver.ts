@@ -10,7 +10,6 @@ import { MongoRepository } from 'typeorm'
 import { ApolloError } from 'apollo-server-core'
 import { InjectRepository } from '@nestjs/typeorm'
 import {Role, RoleInput} from './role.entity'
-import M = require('minimatch')
 @Resolver('role')
 export class RoleResolver {
   constructor (
@@ -30,13 +29,13 @@ export class RoleResolver {
 			const code = '404'
 			const additionalProperties = {}
 
-			const user = await this.roleRepository.findOne({_id})
+			const role = await this.roleRepository.findOne({_id})
 
-			if (!user) {
+			if (!role) {
 				throw new ApolloError(message, code, additionalProperties)
 			}
 
-			return user
+			return role
 		} catch (error) {
 			throw new ApolloError(error, '500', {})
 		}

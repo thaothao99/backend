@@ -4,13 +4,13 @@ import {
 	IsString,
 	IsNotEmpty,
 } from 'class-validator'
-export class RoleInput {
+export class PermissionInput {
   code: string;
   name: string;
 }
 
 @Entity()
-export class Role {
+export class Permission {
 	@ObjectIdColumn()
 	_id: string
 

@@ -15,6 +15,7 @@ import * as jwt from 'jsonwebtoken';
 import { MongoRepository, getMongoRepository } from 'typeorm';
 import { User } from './modules/user/user.entity';
 import { RoleModule } from './modules/role/role.module';
+import { PermissionModule } from './modules/permission/permission.module';
 
 const directiveResolvers = {
   isAuthenticated: (next, source, args, ctx) => {
@@ -85,7 +86,9 @@ const directiveResolvers = {
     }), */
     UserModule,
     TypeormModule,
-    RoleModule
+    RoleModule,
+    PermissionModule
+    
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,0 +1,19 @@
+
+type Permission {
+  _id: ID!
+  code: String!
+  name: String!
+}
+input PermissionInput {
+  code: String!
+  name: String!
+}
+type Query {
+  permissions: [Permission!] @isAuthenticated
+  permission(_id: String!): Permission! @isAuthenticated
+}
+type Mutation {
+  createPermission(input: PermissionInput!): Permission @isAuthenticated
+  updatePermission(_id: String!, input: PermissionInput!): Boolean @isAuthenticated
+  deletePermission(_id: String!): Boolean @isAuthenticated
+}
