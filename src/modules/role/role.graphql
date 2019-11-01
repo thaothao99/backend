@@ -1,0 +1,19 @@
+
+type Role {
+  _id: ID!
+  code: String!
+  name: String!
+}
+input RoleInput {
+  code: String!
+  name: String!
+}
+type Query {
+  roles: [Role!] @isAuthenticated
+  role(_id: String!): Role! @isAuthenticated
+}
+type Mutation {
+  createRole(input: RoleInput!): Role @isAuthenticated
+  updateRole(_id: String!, input: RoleInput!): Boolean @isAuthenticated
+  deleteRole(_id: String!): Boolean @isAuthenticated
+}

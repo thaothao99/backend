@@ -14,6 +14,7 @@ import { ApolloError } from 'apollo-server-core'
 import * as jwt from 'jsonwebtoken';
 import { MongoRepository, getMongoRepository } from 'typeorm';
 import { User } from './modules/user/user.entity';
+import { RoleModule } from './modules/role/role.module';
 
 const directiveResolvers = {
   isAuthenticated: (next, source, args, ctx) => {
@@ -84,6 +85,7 @@ const directiveResolvers = {
     }), */
     UserModule,
     TypeormModule,
+    RoleModule
   ],
   controllers: [AppController],
   providers: [AppService],

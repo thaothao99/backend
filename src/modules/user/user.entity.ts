@@ -15,7 +15,7 @@ export class LoginResponse {
 // export abstract class IMutation {
 //   abstract createUser(input: UserInput): User | Promise<User>;
 
-//   abstract updateUser(_id: string, input: UserInput): User | Promise<User>;
+//   abstract updateUser(_id: string, input: UserInput): User | Promise<Boolean>;
 
 //   abstract deleteUser(_id: string): boolean | Promise<boolean>;
 // }
