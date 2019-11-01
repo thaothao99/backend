@@ -45,7 +45,7 @@ const directiveResolvers = {
         const { token } = req.headers;
         // const service = this.authService.hello();
         // console.log(service);
-        console.log(currentUser)
+        //console.log(currentUser)
         if (token) {
           const message = 'Invalid Token'
 					const code = '498'
@@ -56,7 +56,6 @@ const directiveResolvers = {
             const _id = decodeToken.id
             //  console.log(decodeToken)
             currentUser = await getMongoRepository(User).findOne({_id})
-            console.log(currentUser)
 					} catch (error) {
 						throw new ApolloError(message, code, additionalProperties)
           }
