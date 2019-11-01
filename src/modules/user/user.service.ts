@@ -21,7 +21,12 @@ export class UserService {
   }
 
   async create(input: UserInput): Promise<User> {
-    return await this.userRepository.save({ ...input });
+    const { username, password } = input
+    const user = new User()
+		user.username = username
+    user.password = password
+		return await this.userRepository.save(user)
+    //  return await this.userRepository.save({ ...input });
   }
 
   // async update(_id: string, input: UserInput): Promise<User> {
@@ -38,9 +43,9 @@ export class UserService {
     //  return { token: '123123123' };
     const { username, password } = input;
     const message = 'Incorrect email or password. Please try again.';
-    const user = await this.userRepository.findOne({ username, password});
+    const user = await this.userRepository.findOne({ username});
 
-    if (!user ) {
+    if (!user || !user.matchesPassword(password)) {
       throw new AuthenticationError(message);
     }
     const token = jwt.sign(

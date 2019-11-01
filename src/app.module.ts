@@ -45,6 +45,7 @@ const directiveResolvers = {
         const { token } = req.headers;
         // const service = this.authService.hello();
         // console.log(service);
+        console.log(currentUser)
         if (token) {
           const message = 'Invalid Token'
 					const code = '498'
@@ -53,8 +54,9 @@ const directiveResolvers = {
 						let decodeToken
             decodeToken = await jwt.verify(token, process.env.JWT_SECRET)
             const _id = decodeToken.id
-            currentUser = await getMongoRepository(User).findOne(_id)
-            console.log(decodeToken)
+            //  console.log(decodeToken)
+            currentUser = await getMongoRepository(User).findOne({_id})
+            console.log(currentUser)
 					} catch (error) {
 						throw new ApolloError(message, code, additionalProperties)
           }
