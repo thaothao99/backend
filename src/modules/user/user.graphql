@@ -1,11 +1,15 @@
 directive @isAuthenticated on FIELD | FIELD_DEFINITION
-directive @hasRole(role: String) on FIELD | FIELD_DEFINITION
-
+directive @hasPermission(code: String) on FIELD | FIELD_DEFINITION
+type Role {
+  _id: ID!
+  code: String!
+  name: String!
+}
 type User {
   _id: ID!
   username: String!
   password: String!
-  role: String!
+  role: Role!
 }
 
 input UserInput {
@@ -25,7 +29,7 @@ type Query {
 type Mutation {
   createUser(input: UserInput!): User!
   updateUser(_id: String!, input: UserInput!): Boolean!
-  deleteUser(_id: String!): Boolean!
+  deleteUser(_id: String!): Boolean! @hasPermission(code: "DELETE_USER")
   deleteAll: Boolean!
   login(input: UserInput!): LoginResponse!
 }

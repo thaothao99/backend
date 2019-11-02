@@ -5,6 +5,7 @@ import {
 	IsString,
 	IsNotEmpty,
 } from 'class-validator'
+import { Role } from '../role/role.entity';
 export class UserInput {
   username: string;
   password: string;
@@ -42,9 +43,8 @@ export class User {
   password: string
   
 	@Column()
-	@IsString()
 	@IsNotEmpty()
-  role: string
+  role: Role
 
   // @BeforeInsert()
 	// async b4register() {
@@ -57,7 +57,6 @@ export class User {
   async b4register() {
     this._id = await uuid.v1()
     this.password = await bcrypt.hashSync(this.password, 8);
-    this.role =''
   }
   @BeforeUpdate()
   async b4update() {

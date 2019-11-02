@@ -16,6 +16,10 @@ import { MongoRepository, getMongoRepository } from 'typeorm';
 import { User } from './modules/user/user.entity';
 import { RoleModule } from './modules/role/role.module';
 import { PermissionModule } from './modules/permission/permission.module';
+import { Role } from './modules/role/role.entity';
+import { RolePermissionModule } from './modules/rolePermission/rolePermission.module';
+import { Permission } from './modules/permission/permission.entity';
+import { RolePermission } from './modules/rolePermission/rolePermission.entity';
 
 const directiveResolvers = {
   isAuthenticated: (next, source, args, ctx) => {
@@ -29,11 +33,27 @@ const directiveResolvers = {
 				}
 				return next()
     },
-  /* hasRole: (next, source, { role }, ctx) => {
-    const { currentUser } = ctx
-    if ('admin' === currentUser.role) return next();
-    throw new Error(`Must have role: ${role}, you have role: ${currentUser.role}`);
-  }, */
+    hasPermission: async (next, source, args, ctx) => {
+      const { code } = args
+      const { currentUser } = ctx
+
+      if (!currentUser) {
+        throw new Error('You are not authenticated!')
+      }
+      const permisisonRequired = await getMongoRepository(Permission).findOne({code})
+      console.log(permisisonRequired, currentUser )
+      const rolePermissionRequired = await getMongoRepository(RolePermission).findOne({
+        idRole: currentUser.role._id, 
+        idPermission: permisisonRequired._id
+      })
+      console.log(rolePermissionRequired)
+      if (!rolePermissionRequired) {
+        throw new Error(
+          `You don't have role!`
+        )
+      }
+      return next()
+  },
 };
 
 @Module({
@@ -87,7 +107,8 @@ const directiveResolvers = {
     UserModule,
     TypeormModule,
     RoleModule,
-    PermissionModule
+    PermissionModule,
+    RolePermissionModule
     
   ],
   controllers: [AppController],

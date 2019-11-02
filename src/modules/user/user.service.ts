@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User, UserInput, LoginResponse } from './user.entity';
-import { MongoRepository } from 'typeorm';
+import { MongoRepository, getMongoRepository } from 'typeorm';
 import * as jwt from 'jsonwebtoken';
 import { AuthenticationError } from 'apollo-server-express';
+import { Role } from '../role/role.entity';
 
 @Injectable()
 export class UserService {
@@ -25,6 +26,7 @@ export class UserService {
     const user = new User()
 		user.username = username
     user.password = password
+    user.role = await getMongoRepository(Role).findOne({code: 'USER'})
 		return await this.userRepository.save(user)
     //  return await this.userRepository.save({ ...input });
   }
