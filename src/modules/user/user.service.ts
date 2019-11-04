@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User, UserInput, LoginResponse } from './user.entity';
+import { User, UserInput, LoginResponse, LoginUserInput, UpdateUserInput } from './user.entity';
 import { MongoRepository, getMongoRepository } from 'typeorm';
 import * as jwt from 'jsonwebtoken';
 import { AuthenticationError } from 'apollo-server-express';
@@ -22,36 +22,65 @@ export class UserService {
   }
 
   async create(input: UserInput): Promise<User> {
-    const { username, password } = input
+    const { username, password, firstName, lastName, email, address, phone } = input
+    const message = 'Email has already been taken.'
+    const existedUser = await this.userRepository.findOne({ email })
+    if (existedUser) {
+			throw new Error(message)
+		}
     const user = new User()
 		user.username = username
     user.password = password
+    user.firstName = firstName
+    user.lastName = lastName
+    user.email = email
+    user.address = address
+    user.phone = phone
     user.role = await getMongoRepository(Role).findOne({code: 'USER'})
 		return await this.userRepository.save(user)
-    //  return await this.userRepository.save({ ...input });
   }
 
-  // async update(_id: string, input: UserInput): Promise<User> {
-  //   return await this.userRepository.update({ _id });
-  // }
   async deleteOne(_id: string): Promise<boolean> {
-    return (await this.userRepository.deleteOne({_id})) ? true : false;
+    const message = 'Not Found: User'
+    const existedUser = await this.userRepository.findOne({ _id })
+    if (!existedUser) {
+			throw new Error(message)
+		}
+    existedUser.isActive = false
+    return (await this.userRepository.save(existedUser)) ? true : false
   }
   async deleteAll(): Promise<boolean> {
     return (await this.userRepository.deleteMany({})) ? true : false;
   }
-  async login(input: UserInput): Promise<LoginResponse> {
-    //console.log('TCL: UserService -> input', input);
-    //  return { token: '123123123' };
+  async updateUser(_id: string, input: UpdateUserInput): Promise<boolean> {
+    const { address, phone } = input
+    const message = 'Not Found: User'
+    const existedUser = await this.userRepository.findOne({ _id })
+    if (!existedUser) {
+			throw new Error(message)
+		}
+    existedUser.address = address
+    existedUser.phone = phone
+    return (await this.userRepository.save(existedUser)) ? true : false
+  }
+  async updatePass(_id: string, oldPass: string, newPass: string): Promise<boolean> {
+    const message = 'Not Found: User'
+    const existedUser = await this.userRepository.findOne({ _id })
+    if (!existedUser || !(await existedUser.matchesPassword(oldPass))) {
+			throw new Error(message)
+		}
+    existedUser.password = newPass
+    return (await this.userRepository.save(existedUser)) ? true : false
+  }
+  async login(input: LoginUserInput): Promise<LoginResponse> {
     const { username, password } = input;
     const message = 'Incorrect email or password. Please try again.';
-    const user = await this.userRepository.findOne({ username});
-
-    if (!user || !user.matchesPassword(password)) {
+    const existedUser = await this.userRepository.findOne({ username});
+    if (!existedUser || !(await existedUser.matchesPassword(password))) {
       throw new AuthenticationError(message);
     }
     const token = jwt.sign(
-      { id: user._id, username: user.username },
+      { id: existedUser._id, username: existedUser.username },
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     )

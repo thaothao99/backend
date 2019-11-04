@@ -1,6 +1,6 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { UserService } from './user.service';
-import { User, UserInput, LoginResponse } from './user.entity';
+import { User, UserInput, LoginResponse, UpdateUserInput } from './user.entity';
 import { ApolloError } from 'apollo-server-core';
 
 @Resolver('User')
@@ -11,7 +11,10 @@ export class UserResolver {
   async hello() {
     return 'world';
   }
-
+	@Query(() => User)
+	me(@Context('currentUser') currentUser: User) {
+		return currentUser
+	}
   @Query(() => [User])
   async users() {
     return this.userService.findAll();
@@ -41,10 +44,14 @@ export class UserResolver {
     return await this.userService.create(input);
   }
 
-  // @Mutation(() => User)
-  // async updateUser(@Args('_id') _id: string, @Args('input') input: UserInput) {
-  //   return await this.userService.update(_id, input);
-  // }
+  @Mutation(() => User)
+  async updateUser(@Args('_id') _id: string, @Args('input') input: UpdateUserInput) {
+    return await this.userService.updateUser(_id, input);
+  }
+  @Mutation(() => User)
+  async updatePasword(@Args('_id') _id: string, @Args('oldPass') oldPass: string, @Args('newPass') newPass: string) {
+    return await this.userService.updatePass(_id, oldPass, newPass);
+  }
   @Mutation(() => Boolean)
   async deleteUser(@Args('_id') _id: string) {
     return await this.userService.deleteOne(_id);

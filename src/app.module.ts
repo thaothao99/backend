@@ -41,12 +41,12 @@ const directiveResolvers = {
         throw new Error('You are not authenticated!')
       }
       const permisisonRequired = await getMongoRepository(Permission).findOne({code})
-      console.log(permisisonRequired, currentUser )
+      // console.log(permisisonRequired, currentUser )
       const rolePermissionRequired = await getMongoRepository(RolePermission).findOne({
         idRole: currentUser.role._id, 
         idPermission: permisisonRequired._id
       })
-      console.log(rolePermissionRequired)
+      // console.log(rolePermissionRequired)
       if (!rolePermissionRequired) {
         throw new Error(
           `You don't have role!`

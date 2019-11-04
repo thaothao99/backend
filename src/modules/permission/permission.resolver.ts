@@ -44,6 +44,11 @@ export class PermissionResolver {
   @Mutation('createPermission')
   async createPermission(@Args('input') input: PermissionInput): Promise<Permission> {
     const {code, name} = input
+    const message = 'Permission has already existed!'
+    const existedPermission = await this.permissionRepository.findOne({code, name})
+    if(existedPermission){
+      throw new Error(message)
+    }
     const permission = new Permission()
     permission.code = code
     permission.name = name
@@ -55,16 +60,15 @@ export class PermissionResolver {
     @Args('_id') _id: string,
     @Args('input') input: PermissionInput
   ): Promise<boolean> {
-    try {
-      const updatedPermission = await this.permissionRepository.findOneAndUpdate(
-        { _id},
-        { $set: { ...input } },
-        { returnOriginal: false }
-      )
-      return (await this.permissionRepository.save(updatedPermission.value)) ? true : false
-    } catch (error) {
-      throw new ApolloError(error)
-    }
+    const { code, name } = input
+    const message = 'Not Found: Permission'
+    const existedPermission = await this.permissionRepository.findOne({ _id })
+    if (!existedPermission) {
+			throw new Error(message)
+		}
+    existedPermission.code = code
+    existedPermission.name = name
+    return (await this.permissionRepository.save(existedPermission)) ? true : false
   }
 
   @Mutation('deletePermission')

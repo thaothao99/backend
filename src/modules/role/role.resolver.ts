@@ -3,8 +3,6 @@ import {
 	Query,
 	Args,
 	Mutation,
-	Subscription,
-	Context
 } from '@nestjs/graphql'
 import { MongoRepository } from 'typeorm'
 import { ApolloError } from 'apollo-server-core'
@@ -44,6 +42,11 @@ export class RoleResolver {
   @Mutation('createRole')
   async createRole(@Args('input') input: RoleInput): Promise<Role> {
     const {code, name} = input
+    const message = 'Role has already existed!'
+    const existedRole = await this.roleRepository.findOne({code, name})
+    if(existedRole){
+      throw new Error(message)
+    }
     const role = new Role()
     role.code = code
     role.name = name
@@ -55,16 +58,15 @@ export class RoleResolver {
     @Args('_id') _id: string,
     @Args('input') input: RoleInput
   ): Promise<boolean> {
-    try {
-      const updatedRole = await this.roleRepository.findOneAndUpdate(
-        { _id},
-        { $set: { ...input } },
-        { returnOriginal: false }
-      )
-      return (await this.roleRepository.save(updatedRole.value)) ? true : false
-    } catch (error) {
-      throw new ApolloError(error)
-    }
+    const { code, name } = input
+    const message = 'Not Found: Role'
+    const existedRole = await this.roleRepository.findOne({ _id })
+    if (!existedRole) {
+			throw new Error(message)
+		}
+    existedRole.code = code
+    existedRole.name = name
+    return (await this.roleRepository.save(existedRole)) ? true : false
   }
 
   @Mutation('deleteRole')

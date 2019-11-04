@@ -9,27 +9,47 @@ type User {
   _id: ID!
   username: String!
   password: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  phone: String!
+  address: String!
+  isActive: Boolean!
+  isLock: Boolean!
   role: Role!
 }
 
 input UserInput {
   username: String!
   password: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  phone: String!
+  address: String!
 }
 type LoginResponse {
   token: String!
 }
-
+input LoginUserInput {
+	username: String!
+	password: String!
+}
 type Query {
   hello: String! @isAuthenticated
   users: [User!]! @isAuthenticated
   user(_id: String!): User!
+  me: User @isAuthenticated
 }
-
+input UpdateUserInput {
+  phone: String!
+  address: String!
+}
 type Mutation {
   createUser(input: UserInput!): User!
-  updateUser(_id: String!, input: UserInput!): Boolean!
-  deleteUser(_id: String!): Boolean! @hasPermission(code: "DELETE_USER")
+  updateUser(_id: String!, input: UpdateUserInput!): Boolean!
+  deleteUser(_id: String!): Boolean!
   deleteAll: Boolean!
-  login(input: UserInput!): LoginResponse!
+  login(input: LoginUserInput!): LoginResponse!
+  updatePasword(_id: String, oldPass: String, newPass: String!): Boolean!
 }

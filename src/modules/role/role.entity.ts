@@ -1,4 +1,4 @@
-import { Entity, Column, ObjectIdColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
+import { Entity, Column, ObjectIdColumn, BeforeInsert, BeforeUpdate, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import * as uuid from 'uuid';
 import {
 	IsString,
@@ -22,8 +22,8 @@ export class Role {
 	@Column()
 	@IsString()
 	@IsNotEmpty()
-  name: string
-  
+	name: string
+	
   @BeforeInsert()
   b4insert(){
     this._id = uuid.v1()
