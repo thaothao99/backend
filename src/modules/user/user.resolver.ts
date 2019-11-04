@@ -43,7 +43,10 @@ export class UserResolver {
   async createUser(@Args('input') input: UserInput) {
     return await this.userService.create(input);
   }
-
+  @Mutation(() => User)
+  async lockUSer(@Args('_id') _id: string) {
+    return await this.userService.lockUser(_id);
+  }
   @Mutation(() => User)
   async updateUser(@Args('_id') _id: string, @Args('input') input: UpdateUserInput) {
     return await this.userService.updateUser(_id, input);
@@ -64,6 +67,10 @@ export class UserResolver {
   @Mutation(() => LoginResponse)
   async login(@Args('input') input: UserInput) {
     return await this.userService.login(input);
+  }
+  @Mutation(() => Boolean)
+  async setRole(@Args('_id') _id: string, @Args('code') code: string) {
+    return await this.userService.setRole(_id, code)
   }
 
 }

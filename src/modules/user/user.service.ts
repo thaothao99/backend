@@ -49,6 +49,15 @@ export class UserService {
     existedUser.isActive = false
     return (await this.userRepository.save(existedUser)) ? true : false
   }
+  async lockUser(_id: string): Promise<boolean> {
+    const message = 'Not Found: User'
+    const existedUser = await this.userRepository.findOne({ _id })
+    if (!existedUser) {
+			throw new Error(message)
+		}
+    existedUser.isLock = true
+    return (await this.userRepository.save(existedUser)) ? true : false
+  }
   async deleteAll(): Promise<boolean> {
     return (await this.userRepository.deleteMany({})) ? true : false;
   }
@@ -86,5 +95,17 @@ export class UserService {
     )
     return { token };
   }
-  
+  async setRole(_id: string, code: string): Promise<boolean> {
+    const existedrole = await getMongoRepository(Role).findOne({ code })
+    if (!existedrole) {
+      throw new Error('Not found: Role')
+    }
+    const message = 'Not Found: User'
+    const existedUser = await this.userRepository.findOne({ _id })
+    if (!existedUser) {
+			throw new Error(message)
+    }
+    existedUser.role = existedrole
+    return (await this.userRepository.save(existedUser)) ? true : false
+  }
 }

@@ -48,8 +48,10 @@ input UpdateUserInput {
 type Mutation {
   createUser(input: UserInput!): User!
   updateUser(_id: String!, input: UpdateUserInput!): Boolean!
-  deleteUser(_id: String!): Boolean!
-  deleteAll: Boolean!
+  deleteUser(_id: String!): Boolean!  @hasPermission(code: "DELETE_USER")
+  deleteAll: Boolean! @hasPermission(code: "DELETE_USER")
   login(input: LoginUserInput!): LoginResponse!
-  updatePasword(_id: String, oldPass: String, newPass: String!): Boolean!
+  updatePasword(_id: String!, oldPass: String!, newPass: String!): Boolean!
+  lockUSer(_id: String!): Boolean! @hasPermission(code: "LOCK_USER")
+  setRole(_id: String!, code: String!): Boolean! @hasPermission(code: "ROLE_MANAGE")
 }
