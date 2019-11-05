@@ -14,20 +14,24 @@ export class UserService {
   ) {}
 
   async findAll(): Promise<User[]> {
-    return await this.userRepository.find();
+    return await this.userRepository.find({isActive: true});
   }
 
   async findById(_id: string): Promise<User> {
-    return await this.userRepository.findOne({_id});
+    return await this.userRepository.findOne({_id, isActive: true});
   }
 
   async create(input: UserInput): Promise<User> {
     const { username, password, firstName, lastName, email, address, phone } = input
-    const message = 'Email has already been taken.'
+    const message = 'Email has already been taken!'
     const existedUser = await this.userRepository.findOne({ email })
     if (existedUser) {
 			throw new Error(message)
-		}
+    }
+    const existedUserName = await this.userRepository.findOne({ username })
+    if (existedUserName) {
+			throw new Error('User name has been taken!')
+    }
     const user = new User()
 		user.username = username
     user.password = password
@@ -51,7 +55,7 @@ export class UserService {
   }
   async lockUser(_id: string): Promise<boolean> {
     const message = 'Not Found: User'
-    const existedUser = await this.userRepository.findOne({ _id })
+    const existedUser = await this.userRepository.findOne({ _id, isActive: true })
     if (!existedUser) {
 			throw new Error(message)
 		}
@@ -64,7 +68,7 @@ export class UserService {
   async updateUser(_id: string, input: UpdateUserInput): Promise<boolean> {
     const { address, phone } = input
     const message = 'Not Found: User'
-    const existedUser = await this.userRepository.findOne({ _id })
+    const existedUser = await this.userRepository.findOne({ _id, isActive: true })
     if (!existedUser) {
 			throw new Error(message)
 		}
@@ -74,7 +78,7 @@ export class UserService {
   }
   async updatePass(_id: string, oldPass: string, newPass: string): Promise<boolean> {
     const message = 'Not Found: User'
-    const existedUser = await this.userRepository.findOne({ _id })
+    const existedUser = await this.userRepository.findOne({ _id, isActive: true })
     if (!existedUser || !(await existedUser.matchesPassword(oldPass))) {
 			throw new Error(message)
 		}
@@ -83,8 +87,8 @@ export class UserService {
   }
   async login(input: LoginUserInput): Promise<LoginResponse> {
     const { username, password } = input;
-    const message = 'Incorrect email or password. Please try again.';
-    const existedUser = await this.userRepository.findOne({ username});
+    const message = 'Incorrect username or password. Please try again.';
+    const existedUser = await this.userRepository.findOne({ username, isActive: true});
     if (!existedUser || !(await existedUser.matchesPassword(password))) {
       throw new AuthenticationError(message);
     }
