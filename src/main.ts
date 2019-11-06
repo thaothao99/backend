@@ -8,7 +8,10 @@ dotenv.config();
 const port = process.env.PORT || 3000;
 declare const module: any;
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.create(AppModule,{
+    cors: false,
+    logger: false
+  })
   app.use('/voyager', voyagerMiddleware({ endpointUrl: '/graphql' }));
   await app.listen(port);
   if (module.hot) {
