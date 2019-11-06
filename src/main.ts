@@ -7,13 +7,23 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 const port = process.env.PORT || 3000;
 declare const module: any;
+var whitelist = ['http://localhost:3030']
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (whitelist.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Origin not allowed by CORS'));
+    }
+  }
+}
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule,{
-    cors: false,
-    logger: false
-  })
+  const app = await NestFactory.create(AppModule)
+  app.enableCors({ ...corsOptions });
+
   app.use('/voyager', voyagerMiddleware({ endpointUrl: '/graphql' }));
   await app.listen(port);
+
   if (module.hot) {
     module.hot.accept();
     module.hot.dispose(() => app.close());
