@@ -8,14 +8,24 @@ import cors from 'cors'
 dotenv.config();
 const port = process.env.PORT || 3000;
 declare const module: any;
-var corsOptions = {
-  origin: 'http://localhost:3030',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
+var allowedOrigins = ['http://localhost:3030'];
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  app.use(cors({origin: false}))
-
+  app.use(cors({
+    origin: function(origin, callback){
+      // allow requests with no origin 
+      // (like mobile apps or curl requests)
+      if(!origin) return callback(null, true);
+      if(allowedOrigins.indexOf(origin) === -1){
+        var msg = 'The CORS policy for this site does not ' +
+                  'allow access from the specified Origin.';
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    }
+  }));
+  
   // app.use(json({ limit: '10mb' }))
   // app.use(urlencoded({ limit: '10mb', extended: true }))
   // app.use(helmet())
