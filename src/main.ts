@@ -3,25 +3,18 @@ import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 import { express as voyagerMiddleware } from 'graphql-voyager/middleware';
 import * as dotenv from 'dotenv';
-import helmet from 'helmet'
-import { json, urlencoded } from 'body-parser'
+import cors from 'cors'
 
 dotenv.config();
 const port = process.env.PORT || 3000;
 declare const module: any;
-// var whitelist = ['http://localhost:3030, http://localhost:3000, https://petsoredemo.azurewebsites.net']
-// const corsOptions = {
-//   origin: (origin, callback) => {
-//     if (whitelist.includes(origin) || !origin) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Origin not allowed by CORS'));
-//     }
-//   }
-// }
+var corsOptions = {
+  origin: 'http://localhost:3030',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  app.enableCors({ credentials: true, origin: true });
+  app.use(cors(corsOptions))
 
   // app.use(json({ limit: '10mb' }))
   // app.use(urlencoded({ limit: '10mb', extended: true }))
