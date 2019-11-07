@@ -3,23 +3,25 @@ import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 import { express as voyagerMiddleware } from 'graphql-voyager/middleware';
 import * as dotenv from 'dotenv';
+import helmet from 'helmet'
 
 dotenv.config();
 const port = process.env.PORT || 3000;
 declare const module: any;
-var whitelist = ['http://localhost:3030, http://localhost:3000, https://petsoredemo.azurewebsites.net']
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (whitelist.includes(origin) || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Origin not allowed by CORS'));
-    }
-  }
-}
+// var whitelist = ['http://localhost:3030, http://localhost:3000, https://petsoredemo.azurewebsites.net']
+// const corsOptions = {
+//   origin: (origin, callback) => {
+//     if (whitelist.includes(origin) || !origin) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Origin not allowed by CORS'));
+//     }
+//   }
+// }
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  app.enableCors({...corsOptions});
+  app.enableCors();
+	app.use(helmet())
 
   app.use('/voyager', voyagerMiddleware({ endpointUrl: '/graphql' }));
   await app.listen(port);
