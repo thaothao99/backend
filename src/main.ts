@@ -14,7 +14,7 @@ var corsOptions = {
 }
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  app.use(cors(corsOptions))
+  app.use(cors({origin: false}))
 
   // app.use(json({ limit: '10mb' }))
   // app.use(urlencoded({ limit: '10mb', extended: true }))
