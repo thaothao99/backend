@@ -21,12 +21,12 @@ declare const module: any;
 // }
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  app.enableCors({ origin: '*' })
-  app.use(json({ limit: '10mb' }))
-  app.use(urlencoded({ limit: '10mb', extended: true }))
-  app.use(helmet())
+  app.enableCors()
+  // app.use(json({ limit: '10mb' }))
+  // app.use(urlencoded({ limit: '10mb', extended: true }))
+  // app.use(helmet())
 
-  app.use('/voyager', voyagerMiddleware({ endpointUrl: '/graphql' }));
+  // app.use('/voyager', voyagerMiddleware({ endpointUrl: '/graphql' }));
   await app.listen(port);
 
   if (module.hot) {
