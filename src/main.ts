@@ -20,7 +20,7 @@ declare const module: any;
 // }
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  app.enableCors();
+  // app.enableCors();
 	app.use(helmet())
 
   app.use('/voyager', voyagerMiddleware({ endpointUrl: '/graphql' }));
