@@ -21,18 +21,8 @@ declare const module: any;
 // }
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  app.enableCors({
-    origin: ($origin, cb) => {
-      if (['http://localhost:3030'].indexOf($origin) > -1) {
-        cb(null, true);
-      }  else {
-        cb(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true, // << totally ruins it
-    preflightContinue: false,
-    optionsSuccessStatus: 204
-  });
+  app.enableCors({ credentials: true, origin: true });
+
   // app.use(json({ limit: '10mb' }))
   // app.use(urlencoded({ limit: '10mb', extended: true }))
   // app.use(helmet())
