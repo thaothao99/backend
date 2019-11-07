@@ -7,7 +7,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 const port = process.env.PORT || 3000;
 declare const module: any;
-var whitelist = ['http://localhost:3030, http://localhost:3000, https://petsoredemo.azurewebsites.net/graphql']
+var whitelist = ['http://localhost:3030, http://localhost:3000, https://petsoredemo.azurewebsites.net']
 const corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.includes(origin) || !origin) {
