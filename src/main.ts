@@ -3,7 +3,6 @@ import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 import { express as voyagerMiddleware } from 'graphql-voyager/middleware';
 import * as dotenv from 'dotenv';
-import cors from 'cors'
 
 dotenv.config();
 const port = process.env.PORT || 3000;
@@ -12,7 +11,7 @@ var allowedOrigins = ['http://localhost:3030'];
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  app.use(cors({
+  app.enableCors({
     origin: function(origin, callback){
       // allow requests with no origin 
       // (like mobile apps or curl requests)
@@ -24,7 +23,7 @@ async function bootstrap() {
       }
       return callback(null, true);
     }
-  }));
+  });
   
   // app.use(json({ limit: '10mb' }))
   // app.use(urlencoded({ limit: '10mb', extended: true }))
