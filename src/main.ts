@@ -4,6 +4,7 @@ import { Logger } from '@nestjs/common';
 import { express as voyagerMiddleware } from 'graphql-voyager/middleware';
 import * as dotenv from 'dotenv';
 import helmet from 'helmet'
+import { json, urlencoded } from 'body-parser'
 
 dotenv.config();
 const port = process.env.PORT || 3000;
@@ -20,8 +21,10 @@ declare const module: any;
 // }
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  // app.enableCors();
-	app.use(helmet())
+  app.enableCors({ origin: '*' })
+  app.use(json({ limit: '10mb' }))
+  app.use(urlencoded({ limit: '10mb', extended: true }))
+  app.use(helmet())
 
   app.use('/voyager', voyagerMiddleware({ endpointUrl: '/graphql' }));
   await app.listen(port);
