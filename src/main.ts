@@ -9,24 +9,28 @@ const port = process.env.PORT || 3000;
 declare const module: any;
 var allowedOrigins = [`http://localhost:3030`, `http://localhost:3000`, `https://petsoredemo.azurewebsites.net/`];
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
-  app.enableCors({
-    origin: function(origin, callback){
-      // allow requests with no origin 
-      // (like mobile apps or curl requests)
+// async function bootstrap() {
+//   const app = await NestFactory.create(AppModule)
+//   app.enableCors({
+//     origin: function(origin, callback){
+//       // allow requests with no origin 
+//       // (like mobile apps or curl requests)
 
-      console.log(allowedOrigins.indexOf(origin), origin)
-      if(!origin) return callback(null, true);
-      if(allowedOrigins.indexOf(origin) === -1){
-        var msg = 'The CORS policy for this site does not ' +
-                  'allow access from the specified Origin.';
-        return callback(new Error(msg), false);
-      }
-      return callback(null, true);
-    }
-  });
-  
+//       console.log(allowedOrigins.indexOf(origin), ori)
+//       if(!origin) return callback(null, true);
+//       if(allowedOrigins.indexOf(origin) === -1){
+//         var msg = 'The CORS policy for this site does not ' +
+//                   'allow access from the specified Origin.';
+//         return callback(new Error(msg), false);
+//       }
+//       return callback(null, true);
+//     }
+//   });
+async function bootstrap() {
+	const app = await NestFactory.create(AppModule, {
+		cors: true,
+		logger: false
+	})
   // app.use(json({ limit: '10mb' }))
   // app.use(urlencoded({ limit: '10mb', extended: true }))
   // app.use(helmet())
