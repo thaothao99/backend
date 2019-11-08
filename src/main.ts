@@ -7,7 +7,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 const port = process.env.PORT || 3000;
 declare const module: any;
-var allowedOrigins = ['http://localhost:3030'];
+var allowedOrigins = [`http://localhost:3030`, `http://localhost:3000`, `https://petsoredemo.azurewebsites.net/`];
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
