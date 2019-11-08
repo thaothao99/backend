@@ -28,7 +28,7 @@ var allowedOrigins = [`http://localhost:3030`, `http://localhost:3000`, `https:/
 //   });
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule, {
-		cors: true,
+		cors: false,
 		logger: false
 	})
   // app.use(json({ limit: '10mb' }))
