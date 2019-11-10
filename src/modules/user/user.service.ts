@@ -23,14 +23,14 @@ export class UserService {
 
   async create(input: UserInput): Promise<User> {
     const { username, password, firstName, lastName, email, address, phone } = input
-    const message = 'Email has already been taken!'
+    const message = 'Email đã được đăng ký'
     const existedUser = await this.userRepository.findOne({ email })
     if (existedUser) {
 			throw new Error(message)
     }
     const existedUserName = await this.userRepository.findOne({ username })
     if (existedUserName) {
-			throw new Error('User name has been taken!')
+			throw new Error('Tên đăng nhập đã tồn tại')
     }
     const user = new User()
 		user.username = username
@@ -59,7 +59,7 @@ export class UserService {
     if (!existedUser) {
 			throw new Error(message)
 		}
-    existedUser.isLock = true
+    existedUser.isLock = !existedUser.isLock
     return (await this.userRepository.save(existedUser)) ? true : false
   }
   async deleteAll(): Promise<boolean> {
@@ -87,8 +87,11 @@ export class UserService {
   }
   async login(input: LoginUserInput): Promise<LoginResponse> {
     const { username, password } = input;
-    const message = 'Incorrect username or password. Please try again.';
+    const message = 'Tên tài khoản hoặc mật khẩu sai';
     const existedUser = await this.userRepository.findOne({ username, isActive: true});
+    if(existedUser && existedUser.isLock === true){
+      throw new Error('Tài khoản đã bị khóa')
+    }
     if (!existedUser || !(await existedUser.matchesPassword(password))) {
       throw new AuthenticationError(message);
     }
