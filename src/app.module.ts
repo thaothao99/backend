@@ -20,6 +20,7 @@ import { Role } from './modules/role/role.entity';
 import { RolePermissionModule } from './modules/rolePermission/rolePermission.module';
 import { Permission } from './modules/permission/permission.entity';
 import { RolePermission } from './modules/rolePermission/rolePermission.entity';
+import { PetModule } from './modules/pet/pet.module';
 
 const directiveResolvers = {
   isAuthenticated: (next, source, args, ctx) => {
@@ -108,7 +109,8 @@ const directiveResolvers = {
     TypeormModule,
     RoleModule,
     PermissionModule,
-    RolePermissionModule
+    RolePermissionModule,
+    PetModule
     
   ],
   controllers: [AppController],
