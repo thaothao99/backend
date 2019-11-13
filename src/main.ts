@@ -26,11 +26,13 @@ var allowedOrigins = [`http://localhost:3030`, `http://localhost:3000`, `https:/
 //       return callback(null, true);
 //     }
 //   });
+
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule, {
 		cors: false,
-		logger: false
-	})
+		logger: true
+  })
+  
   // app.use(json({ limit: '10mb' }))
   // app.use(urlencoded({ limit: '10mb', extended: true }))
   // app.use(helmet())

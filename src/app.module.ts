@@ -21,6 +21,7 @@ import { RolePermissionModule } from './modules/rolePermission/rolePermission.mo
 import { Permission } from './modules/permission/permission.entity';
 import { RolePermission } from './modules/rolePermission/rolePermission.entity';
 import { PetModule } from './modules/pet/pet.module';
+import { join } from 'path';
 
 const directiveResolvers = {
   isAuthenticated: (next, source, args, ctx) => {
@@ -61,11 +62,20 @@ const directiveResolvers = {
   imports: [
     GraphQLModule.forRoot({
       typePaths: ['./**/*.graphql'],
+      definitions: {
+				path: join(process.cwd(), 'src/graphql.ts'),
+				outputAs: 'class'
+			},
       directiveResolvers,
-      context: async ({ req, res }) => {
+      context: async ({ req, res, connection }) => {
+        if (connection) {
+					return {
+						req: connection.context,
+					}
+				}
         let currentUser;
-
-        const { token } = req.headers;
+        const { authorization } = req.headers;
+        const token = authorization
         // const service = this.authService.hello();
         // console.log(service);
         //console.log(currentUser)
@@ -110,7 +120,7 @@ const directiveResolvers = {
     RoleModule,
     PermissionModule,
     RolePermissionModule,
-    PetModule
+    PetModule,
     
   ],
   controllers: [AppController],
