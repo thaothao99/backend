@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { MulterModule } from '@nestjs/platform-express';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -12,11 +13,10 @@ import { AuthenticationError } from 'apollo-server-express';
 import { ApolloError } from 'apollo-server-core'
 
 import * as jwt from 'jsonwebtoken';
-import { MongoRepository, getMongoRepository } from 'typeorm';
+import { getMongoRepository } from 'typeorm';
 import { User } from './modules/user/user.entity';
 import { RoleModule } from './modules/role/role.module';
 import { PermissionModule } from './modules/permission/permission.module';
-import { Role } from './modules/role/role.entity';
 import { RolePermissionModule } from './modules/rolePermission/rolePermission.module';
 import { Permission } from './modules/permission/permission.entity';
 import { RolePermission } from './modules/rolePermission/rolePermission.entity';
@@ -105,7 +105,10 @@ const directiveResolvers = {
     }),
     TypeOrmModule.forRootAsync({
 			useClass: TypeormService
-		}),
+    }),
+    MulterModule.register({
+      dest: './files',
+    }),
     /* TypeOrmModule.forRoot({
       type: "mongodb",
       url:"mongodb+srv://sa:qsWGRPWsrfwipbei@cluster0-fpeww.mongodb.net/admin?retryWrites=true&w=majority",
