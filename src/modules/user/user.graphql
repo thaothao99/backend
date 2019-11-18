@@ -46,7 +46,7 @@ input UpdateUserInput {
   address: String!
 }
 type Mutation {
-  createUser(input: UserInput!): User! @isAuthenticated
+  createUser(input: UserInput!): User!
   updateUser(_id: String!, input: UpdateUserInput!): Boolean!
   deleteUser(_id: String!): Boolean!  @hasPermission(code: "DELETE_USER")
   deleteAll: Boolean! @hasPermission(code: "DELETE_USER")
