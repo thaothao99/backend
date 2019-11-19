@@ -38,6 +38,9 @@ export class RolePermissionInput {
 export class UpdateUserInput {
     phone: string;
     address: string;
+    urlImg: string;
+    birthDay: string;
+    gender: string;
 }
 
 export class UserInput {
@@ -164,4 +167,7 @@ export class User {
     isActive: boolean;
     isLock: boolean;
     role: Role;
+    urlImg?: string;
+    birthDay?: string;
+    gender?: string;
 }

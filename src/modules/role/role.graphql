@@ -8,11 +8,11 @@ input RoleInput {
   name: String!
 }
 type Query {
-  roles: [Role!] @isAuthenticated
-  role(_id: String!): Role! @isAuthenticated
+  roles: [Role!]
+  role(_id: String!): Role!
 }
 type Mutation {
-  createRole(input: RoleInput!): Role @isAuthenticated
-  updateRole(_id: String!, input: RoleInput!): Boolean @isAuthenticated
-  deleteRole(_id: String!): Boolean @isAuthenticated
+  createRole(input: RoleInput!): Role 
+  updateRole(_id: String!, input: RoleInput!): Boolean
+  deleteRole(_id: String!): Boolean
 }

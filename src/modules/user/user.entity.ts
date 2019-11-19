@@ -48,7 +48,19 @@ export class UpdateUserInput {
 
 	@IsString()
 	@IsNotEmpty()
-  address: string
+	address: string
+	
+	@IsString()
+	@IsNotEmpty()
+  urlImg: string
+
+	@IsString()
+	@IsNotEmpty()
+	birthDay: string
+	
+	@IsString()
+	@IsNotEmpty()
+  gender: string
 }
 export class LoginUserInput {
 	@IsString()
@@ -104,8 +116,23 @@ export class User {
   @Column()
 	@IsBoolean()
 	@IsNotEmpty()
-  isActive: boolean
-  
+	isActive: boolean
+	
+	@Column()
+	@IsString()
+	@IsNotEmpty()
+  urlImg: string
+
+	@Column()
+	@IsString()
+	@IsNotEmpty()
+	birthDay: string
+	
+	@Column()
+	@IsString()
+	@IsNotEmpty()
+	gender: string
+
   @Column()
 	@IsBoolean()
 	@IsNotEmpty()
@@ -114,13 +141,13 @@ export class User {
 	@Column()
 	@IsNotEmpty()
   role: Role
-  
+	
   @BeforeInsert()
   async b4register() {
-    this._id = await uuid.v1()
-    this.password = await bcrypt.hashSync(this.password, 8);
+		this.isLock = false
+    this._id = uuid.v1()
+    this.password = bcrypt.hashSync(this.password, 8);
     this.isActive = true
-    this.isLock = false
   }
   @BeforeUpdate()
   async b4update() {

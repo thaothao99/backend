@@ -17,6 +17,9 @@ type User {
   isActive: Boolean!
   isLock: Boolean!
   role: Role!
+  urlImg: String
+  birthDay: String
+  gender: String
 }
 
 input UserInput {
@@ -44,6 +47,9 @@ type Query {
 input UpdateUserInput {
   phone: String!
   address: String!
+  urlImg: String!
+  birthDay: String!
+  gender: String!
 }
 type Mutation {
   createUser(input: UserInput!): User!
