@@ -8,7 +8,7 @@ export class TypeormService implements TypeOrmOptionsFactory {
 		return {
 			type: 'mongodb',
       url: 'mongodb+srv://sa:qsWGRPWsrfwipbei@cluster0-fpeww.mongodb.net/admin?retryWrites=true&w=majority',
-      database: "test",
+      database: "test123",
 			entities: getMetadataArgsStorage().tables.map(tbl => tbl.target),
 			synchronize: true,
 			useNewUrlParser: true,
