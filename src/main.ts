@@ -26,10 +26,16 @@ var allowedOrigins = [`http://localhost:3030`, `http://localhost:3000`, `https:/
 //       return callback(null, true);
 //     }
 //   });
-
+const options = {
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  preflightContinue: true,
+  optionsSuccessStatus: 204,
+  credentials: true,
+}
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule, {
-		cors: false,
+		cors: options,
 		logger: true
   })
   
