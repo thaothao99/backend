@@ -17,6 +17,9 @@ type User {
   isActive: Boolean!
   isLock: Boolean!
   role: Role!
+  urlImg: String
+  birthDay: String
+  gender: String
 }
 
 input UserInput {
@@ -44,14 +47,17 @@ type Query {
 input UpdateUserInput {
   phone: String!
   address: String!
+  birthDay: String!
+  gender: String!
 }
 type Mutation {
   createUser(input: UserInput!): User!
-  updateUser(_id: String!, input: UpdateUserInput!): Boolean!
-  deleteUser(_id: String!): Boolean!  @hasPermission(code: "DELETE_USER")
+  updateUser(_id: String!, input: UpdateUserInput!): Boolean! 
+  deleteUser(_id: String!): Boolean!  @hasPermission(code: "DELETE_USER") 
   deleteAll: Boolean! @hasPermission(code: "DELETE_USER")
   login(input: LoginUserInput!): LoginResponse! 
-  updatePasword(_id: String!, oldPass: String!, newPass: String!): Boolean!
-  lockUSer(_id: String!): Boolean! @hasPermission(code: "LOCK_USER")
+  updatePasword(_id: String!, oldPass: String!, newPass: String!): Boolean! 
+  lockUSer(_id: String!): Boolean! @hasPermission(code: "LOCK_USER") 
   setRole(_id: String!, code: String!): Boolean! @hasPermission(code: "ROLE_MANAGE")
+  updateUrlImg(_id: String!, urlImg: String!): Boolean!  
 }

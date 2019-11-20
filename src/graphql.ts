@@ -38,6 +38,8 @@ export class RolePermissionInput {
 export class UpdateUserInput {
     phone: string;
     address: string;
+    birthDay: string;
+    gender: string;
 }
 
 export class UserInput {
@@ -92,6 +94,8 @@ export abstract class IMutation {
     abstract lockUSer(_id: string): boolean | Promise<boolean>;
 
     abstract setRole(_id: string, code: string): boolean | Promise<boolean>;
+
+    abstract updateUrlImg(_id: string, urlImg: string): boolean | Promise<boolean>;
 }
 
 export class Permission {
@@ -164,4 +168,7 @@ export class User {
     isActive: boolean;
     isLock: boolean;
     role: Role;
+    urlImg?: string;
+    birthDay?: string;
+    gender?: string;
 }

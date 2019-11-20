@@ -1,4 +1,4 @@
-import { Entity, Column, ObjectIdColumn, BeforeInsert, BeforeUpdate, Index } from 'typeorm';
+import { Entity, Column, ObjectIdColumn, BeforeInsert, Index } from 'typeorm';
 import * as uuid from 'uuid';
 import * as bcrypt from 'bcryptjs';
 import {
@@ -48,7 +48,15 @@ export class UpdateUserInput {
 
 	@IsString()
 	@IsNotEmpty()
-  address: string
+	address: string
+
+	@IsString()
+	@IsNotEmpty()
+	birthDay: string
+	
+	@IsString()
+	@IsNotEmpty()
+  gender: string
 }
 export class LoginUserInput {
 	@IsString()
@@ -104,8 +112,23 @@ export class User {
   @Column()
 	@IsBoolean()
 	@IsNotEmpty()
-  isActive: boolean
-  
+	isActive: boolean
+	
+	@Column()
+	@IsString()
+	@IsNotEmpty()
+  urlImg: string
+
+	@Column()
+	@IsString()
+	@IsNotEmpty()
+	birthDay: string
+	
+	@Column()
+	@IsString()
+	@IsNotEmpty()
+	gender: string
+
   @Column()
 	@IsBoolean()
 	@IsNotEmpty()
@@ -114,17 +137,13 @@ export class User {
 	@Column()
 	@IsNotEmpty()
   role: Role
-  
+	
   @BeforeInsert()
   async b4register() {
-    this._id = await uuid.v1()
-    this.password = await bcrypt.hashSync(this.password, 8);
-    this.isActive = true
-    this.isLock = false
-  }
-  @BeforeUpdate()
-  async b4update() {
-    this.password = await bcrypt.hash(this.password, 10);
+		this.isLock = false
+    this._id = uuid.v1()
+    this.password = bcrypt.hashSync(this.password, 8);
+		this.isActive = true
   }
   async matchesPassword(password) {
 		return await bcrypt.compareSync(password, this.password)

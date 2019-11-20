@@ -74,7 +74,7 @@ const directiveResolvers = {
 					}
 				}
         let currentUser;
-        const token = req.headers.authorization || req.headers.token
+        const token = req.headers.token
        // const service = this.authService.hello();
         // console.log(service);
         //console.log(currentUser)

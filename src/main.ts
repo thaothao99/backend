@@ -29,7 +29,7 @@ var allowedOrigins = [`http://localhost:3030`, `http://localhost:3000`, `https:/
 const options = {
   origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  preflightContinue: true,
+  preflightContinue: false,
   optionsSuccessStatus: 204,
   credentials: true,
 }

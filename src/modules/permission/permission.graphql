@@ -9,11 +9,11 @@ input PermissionInput {
   name: String!
 }
 type Query {
-  permissions: [Permission!] @isAuthenticated
-  permission(_id: String!): Permission! @isAuthenticated
+  permissions: [Permission!] 
+  permission(_id: String!): Permission!
 }
 type Mutation {
-  createPermission(input: PermissionInput!): Permission @isAuthenticated
-  updatePermission(_id: String!, input: PermissionInput!): Boolean @isAuthenticated
-  deletePermission(_id: String!): Boolean @isAuthenticated
+  createPermission(input: PermissionInput!): Permission 
+  updatePermission(_id: String!, input: PermissionInput!): Boolean 
+  deletePermission(_id: String!): Boolean
 }

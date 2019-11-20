@@ -72,5 +72,9 @@ export class UserResolver {
   async setRole(@Args('_id') _id: string, @Args('code') code: string) {
     return await this.userService.setRole(_id, code)
   }
+  @Mutation(() => Boolean)
+  async updateUrlImg(@Args('_id') _id: string, @Args('urlImg') urlImg: string) {
+    return await this.userService.setUrlImg(_id, urlImg)
+  }
 
 }
