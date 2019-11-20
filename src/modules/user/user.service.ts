@@ -66,7 +66,7 @@ export class UserService {
     return (await this.userRepository.deleteMany({})) ? true : false;
   }
   async updateUser(_id: string, input: UpdateUserInput): Promise<boolean> {
-    const { address, phone } = input
+    const { address, phone, gender, birthDay } = input
     const message = 'Not Found: User'
     const existedUser = await this.userRepository.findOne({ _id, isActive: true })
     if (!existedUser) {
@@ -74,6 +74,8 @@ export class UserService {
 		}
     existedUser.address = address
     existedUser.phone = phone
+    existedUser.gender = gender
+    existedUser.birthDay = birthDay
     return (await this.userRepository.save(existedUser)) ? true : false
   }
   async updatePass(_id: string, oldPass: string, newPass: string): Promise<boolean> {
@@ -115,4 +117,14 @@ export class UserService {
     existedUser.role = existedrole
     return (await this.userRepository.save(existedUser)) ? true : false
   }
+  async setUrlImg(_id: string, urlImg: string): Promise<boolean> {
+    const message = 'Not Found: User'
+    const existedUser = await this.userRepository.findOne({ _id })
+    if (!existedUser) {
+			throw new Error(message)
+    }
+    existedUser.urlImg = "http://localhost:3000/files/"+urlImg
+    return (await this.userRepository.save(existedUser)) ? true : false
+  }
+
 }
