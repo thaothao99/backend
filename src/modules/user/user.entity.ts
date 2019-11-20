@@ -1,4 +1,4 @@
-import { Entity, Column, ObjectIdColumn, BeforeInsert, BeforeUpdate, Index } from 'typeorm';
+import { Entity, Column, ObjectIdColumn, BeforeInsert, Index } from 'typeorm';
 import * as uuid from 'uuid';
 import * as bcrypt from 'bcryptjs';
 import {
@@ -49,10 +49,6 @@ export class UpdateUserInput {
 	@IsString()
 	@IsNotEmpty()
 	address: string
-	
-	@IsString()
-	@IsNotEmpty()
-  urlImg: string
 
 	@IsString()
 	@IsNotEmpty()
@@ -147,11 +143,7 @@ export class User {
 		this.isLock = false
     this._id = uuid.v1()
     this.password = bcrypt.hashSync(this.password, 8);
-    this.isActive = true
-  }
-  @BeforeUpdate()
-  async b4update() {
-    this.password = await bcrypt.hash(this.password, 10);
+		this.isActive = true
   }
   async matchesPassword(password) {
 		return await bcrypt.compareSync(password, this.password)

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, UseInterceptors, UploadedFile, Headers } from '@nestjs/common';
+import { Controller, Get, Post, UseInterceptors, UploadedFile, Headers, Param, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -49,5 +49,9 @@ export class AppController {
       filename: file.filename,
     };
     return response;
+  }
+  @Get('/files/:imgpath')
+  seeUploadedFile(@Param('imgpath') image, @Res() res) {
+    return res.sendFile(image, { root: './files' });
   }
 }
