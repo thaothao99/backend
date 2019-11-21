@@ -81,10 +81,14 @@ export class UserService {
   async updatePass(_id: string, oldPass: string, newPass: string): Promise<boolean> {
     const message = 'Not Found: User'
     const existedUser = await this.userRepository.findOne({ _id, isActive: true })
-    if (!existedUser || !(await existedUser.matchesPassword(oldPass))) {
+    if (!existedUser) {
 			throw new Error(message)
-		}
-    existedUser.password = newPass
+    }
+    if(!await(existedUser.matchesPassword(oldPass))){
+      throw new Error("Sai mật khẩu cũ")
+    }
+    console.log( await(existedUser.matchesPassword(oldPass)))
+    existedUser.password = await existedUser.hashPass(newPass)
     return (await this.userRepository.save(existedUser)) ? true : false
   }
   async login(input: LoginUserInput): Promise<LoginResponse> {
