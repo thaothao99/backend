@@ -39,30 +39,37 @@ export class Pet {
 	@ObjectIdColumn()
 	_id: string
 
-  @IsString()
+	@Column()
+	@IsString()
 	@IsNotEmpty()
 	name: string
 
+	@Column()
 	@IsString()
 	@IsNotEmpty()
-  age: string
-  
+	age: string
+	
+	@Column()
   @IsString()
 	@IsNotEmpty()
   gender: string
-
+	
+	@Column()
 	@IsString()
 	@IsNotEmpty()
   species: string
 
+	@Column()
 	@IsString()
 	@IsNotEmpty()
   breed: string
 
+	@Column()
 	@IsString()
 	@IsNotEmpty()
   owner: string
 
+	@Column()
   @IsString()
 	@IsNotEmpty()
   health: string

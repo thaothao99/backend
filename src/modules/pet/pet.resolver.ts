@@ -17,7 +17,7 @@ export class PetResolver {
   
   @Query('pets')
   async pets() {
-    return this.petRepository.find()
+    return this.petRepository.find({isActive: true})
   }
 
   @Query('pet')
@@ -40,12 +40,18 @@ export class PetResolver {
   }
   @Query('petByOwner')
   async petByOwner(@Args('owner') owner: string) {
-    return this.petRepository.find({owner})
+    return this.petRepository.find({owner, isActive: true})
   }
 
   @Mutation('createPet')
   async createPet(@Args('input') input: PetInput): Promise<Pet> {
     const {name, age, breed, gender, health, owner, species} = input
+    const message = "Tên Pet đã tồn tại"
+    const existedPet =  await this.petRepository.findOne({name, owner})
+    console.log(existedPet)
+    if(existedPet){
+      throw new Error(message)
+    }
     const pet = new Pet()
     pet.name = name
     pet.age = age
@@ -54,7 +60,6 @@ export class PetResolver {
     pet.health = health
     pet.owner = owner
     pet.species = species
-    console.log(pet)
     return await this.petRepository.save(pet)
   }
 
@@ -88,8 +93,7 @@ export class PetResolver {
 			if (!pet) {
 				throw new ApolloError(message, code, additionalProperties)
 			}
-      const {name, age, breed, gender, health, owner, species} = input
-      pet.name = name
+      const {age, breed, gender, health, owner, species} = input
       pet.age = age
       pet.breed = breed
       pet.gender = gender
