@@ -96,7 +96,7 @@ export class PetResolver {
       const {age, health, urlImg} = input
       pet.age = age
       pet.health = health
-      pet.urlImg = urlImg ? "http://localhost:3000/files/"+urlImg : ''
+      pet.urlImg = urlImg ? "http://localhost:3000/files/"+urlImg : pet.urlImg
       return await this.petRepository.save(pet) ? true : false
 		} catch (error) {
 			throw new ApolloError(error, '500', {})
