@@ -17,12 +17,13 @@ export class PermissionInput {
 
 export class PetInput {
     name: string;
-    age: string;
+    age: number;
     gender: string;
     species: string;
     breed: string;
     owner: string;
     health: string;
+    urlImg?: string;
 }
 
 export class RoleInput {
@@ -33,6 +34,12 @@ export class RoleInput {
 export class RolePermissionInput {
     idRole: string;
     idPermission: string;
+}
+
+export class UpdatePetInput {
+    age: number;
+    health: string;
+    urlImg?: string;
 }
 
 export class UpdateUserInput {
@@ -67,7 +74,7 @@ export abstract class IMutation {
 
     abstract deletePet(_id: string): boolean | Promise<boolean>;
 
-    abstract updatePet(_id: string, input: PetInput): boolean | Promise<boolean>;
+    abstract updatePet(_id: string, input: UpdatePetInput): boolean | Promise<boolean>;
 
     abstract createRole(input: RoleInput): Role | Promise<Role>;
 
@@ -107,12 +114,13 @@ export class Permission {
 export class Pet {
     _id: string;
     name: string;
-    age: string;
+    age: number;
     gender: string;
     species: string;
     breed: string;
     owner: string;
     health: string;
+    urlImg?: string;
     isActive: boolean;
 }
 

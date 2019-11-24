@@ -7,7 +7,7 @@ import {
 import { MongoRepository } from 'typeorm'
 import { ApolloError } from 'apollo-server-core'
 import { InjectRepository } from '@nestjs/typeorm'
-import {Pet, PetInput} from './pet.entity'
+import {Pet, PetInput, UpdatePetInput} from './pet.entity'
 @Resolver('pet')
 export class PetResolver {
   constructor (
@@ -27,7 +27,7 @@ export class PetResolver {
 			const code = '404'
 			const additionalProperties = {}
 
-			const pet = await this.petRepository.findOne({_id})
+			const pet = await this.petRepository.findOne({_id, isActive: true})
 
 			if (!pet) {
 				throw new ApolloError(message, code, additionalProperties)
@@ -42,12 +42,11 @@ export class PetResolver {
   async petByOwner(@Args('owner') owner: string) {
     return this.petRepository.find({owner, isActive: true})
   }
-
   @Mutation('createPet')
   async createPet(@Args('input') input: PetInput): Promise<Pet> {
-    const {name, age, breed, gender, health, owner, species} = input
+    const {name, age, breed, gender, health, owner, species, urlImg} = input
     const message = "Tên Pet đã tồn tại"
-    const existedPet =  await this.petRepository.findOne({name, owner})
+    const existedPet =  await this.petRepository.findOne({name, owner, isActive: true})
     console.log(existedPet)
     if(existedPet){
       throw new Error(message)
@@ -60,6 +59,7 @@ export class PetResolver {
     pet.health = health
     pet.owner = owner
     pet.species = species
+    pet.urlImg = urlImg ? "http://localhost:3000/files/"+urlImg : ''
     return await this.petRepository.save(pet)
   }
 
@@ -70,7 +70,7 @@ export class PetResolver {
 			const code = '404'
 			const additionalProperties = {}
 
-			const pet = await this.petRepository.findOne({_id})
+			const pet = await this.petRepository.findOne({_id, isActive: true})
 
 			if (!pet) {
 				throw new ApolloError(message, code, additionalProperties)
@@ -82,7 +82,7 @@ export class PetResolver {
 		}
   }
   @Mutation('updatePet')
-  async updatePet(@Args('_id') _id: string, @Args('input') input: PetInput): Promise<Boolean> {
+  async updatePet(@Args('_id') _id: string, @Args('input') input: UpdatePetInput): Promise<Boolean> {
     try {
 			const message = 'Not Found: Pet'
 			const code = '404'
@@ -93,13 +93,10 @@ export class PetResolver {
 			if (!pet) {
 				throw new ApolloError(message, code, additionalProperties)
 			}
-      const {age, breed, gender, health, owner, species} = input
+      const {age, health, urlImg} = input
       pet.age = age
-      pet.breed = breed
-      pet.gender = gender
       pet.health = health
-      pet.owner = owner
-      pet.species = species
+      pet.urlImg = urlImg ? "http://localhost:3000/files/"+urlImg : ''
       return await this.petRepository.save(pet) ? true : false
 		} catch (error) {
 			throw new ApolloError(error, '500', {})
