@@ -16,7 +16,14 @@ export class UserService {
   async findAll(): Promise<User[]> {
     return await this.userRepository.find({isActive: true});
   }
-
+  async findCustomers(): Promise<User[]> {
+    const role = await getMongoRepository(Role).findOne({code: 'USER'})
+    return await this.userRepository.find({isActive: true, role})
+  }
+  async findEmployees(): Promise<User[]> {
+    const role = await getMongoRepository(Role).findOne({code: 'EMPLOYEE'})
+    return await this.userRepository.find({isActive: true, role})
+  }
   async findById(_id: string): Promise<User> {
     return await this.userRepository.findOne({_id, isActive: true});
   }

@@ -19,7 +19,14 @@ export class UserResolver {
   async users() {
     return this.userService.findAll();
   }
-
+  @Query(() => [User])
+  async customers() {
+    return this.userService.findCustomers();
+  }
+  @Query(() => [User])
+  async employees() {
+    return this.userService.findEmployees();
+  }
 	@Query(() => User)
 	async user(@Args('_id') _id: string) {
 		try {

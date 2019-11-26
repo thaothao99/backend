@@ -35,27 +35,39 @@ const directiveResolvers = {
 				}
 				return next()
     },
-    hasPermission: async (next, source, args, ctx) => {
-      const { code } = args
-      const { currentUser } = ctx
+  //   hasPermission: async (next, source, args, ctx) => {
+  //     const { code } = args
+  //     const { currentUser } = ctx
 
-      if (!currentUser) {
-        throw new Error('You are not authenticated!')
-      }
-      const permisisonRequired = await getMongoRepository(Permission).findOne({code})
-      // console.log(permisisonRequired, currentUser )
-      const rolePermissionRequired = await getMongoRepository(RolePermission).findOne({
-        idRole: currentUser.role._id, 
-        idPermission: permisisonRequired._id
-      })
-      // console.log(rolePermissionRequired)
-      if (!rolePermissionRequired) {
-        throw new Error(
-          `You don't have role!`
-        )
-      }
-      return next()
-  },
+  //     if (!currentUser) {
+  //       throw new Error('You are not authenticated!')
+  //     }
+  //     const permisisonRequired = await getMongoRepository(Permission).findOne({code})
+  //     // console.log(permisisonRequired, currentUser )
+  //     const rolePermissionRequired = await getMongoRepository(RolePermission).findOne({
+  //       idRole: currentUser.role._id, 
+  //       idPermission: permisisonRequired._id
+  //     })
+  //     // console.log(rolePermissionRequired)
+  //     if (!rolePermissionRequired) {
+  //       throw new Error(
+  //         `You don't have role!`
+  //       )
+  //     }
+  //     return next()
+  // },
+  hasRole: async (next, source, args, ctx) => {
+    const { code } = args
+    const { currentUser } = ctx
+
+    if (!currentUser) {
+      throw new Error('You are not authenticated!')
+    }
+    if(code!==currentUser.role.code) {
+      throw new Error("You don't have role!")
+    }
+    return next()
+},
 };
 
 @Module({

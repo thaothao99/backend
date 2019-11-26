@@ -147,6 +147,10 @@ export abstract class IQuery {
 
     abstract users(): User[] | Promise<User[]>;
 
+    abstract customers(): User[] | Promise<User[]>;
+
+    abstract employees(): User[] | Promise<User[]>;
+
     abstract user(_id: string): User | Promise<User>;
 
     abstract me(): User | Promise<User>;
