@@ -55,6 +55,10 @@ export class UserResolver {
     return await this.userService.lockUser(_id);
   }
   @Mutation(() => User)
+  async lockUSerAcc(@Args('_id') _id: string) {
+    return await this.userService.lockUserAcc(_id);
+  }
+  @Mutation(() => User)
   async updateUser(@Args('_id') _id: string, @Args('input') input: UpdateUserInput) {
     return await this.userService.updateUser(_id, input);
   }

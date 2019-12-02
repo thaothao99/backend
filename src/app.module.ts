@@ -22,6 +22,7 @@ import { Permission } from './modules/permission/permission.entity';
 import { RolePermission } from './modules/rolePermission/rolePermission.entity';
 import { PetModule } from './modules/pet/pet.module';
 import { join } from 'path';
+import { ProductModule } from './modules/product/product.module';
 
 const directiveResolvers = {
   isAuthenticated: (next, source, args, ctx) => {
@@ -135,6 +136,7 @@ const directiveResolvers = {
     PermissionModule,
     RolePermissionModule,
     PetModule,
+    ProductModule
     
   ],
   controllers: [AppController],

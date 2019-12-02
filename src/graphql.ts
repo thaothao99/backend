@@ -26,6 +26,15 @@ export class PetInput {
     urlImg?: string;
 }
 
+export class ProductInput {
+    name: string;
+    description: string;
+    price: number;
+    amount: number;
+    urlImg?: string;
+    type: string;
+}
+
 export class RoleInput {
     code: string;
     name: string;
@@ -76,6 +85,14 @@ export abstract class IMutation {
 
     abstract updatePet(_id: string, input: UpdatePetInput): boolean | Promise<boolean>;
 
+    abstract createProduct(input: ProductInput): Product | Promise<Product>;
+
+    abstract updateAmount(_id: string, amount: number): boolean | Promise<boolean>;
+
+    abstract updateProduct(_id?: string, input?: ProductInput): boolean | Promise<boolean>;
+
+    abstract deleteProduct(_id?: string): boolean | Promise<boolean>;
+
     abstract createRole(input: RoleInput): Role | Promise<Role>;
 
     abstract updateRole(_id: string, input: RoleInput): boolean | Promise<boolean>;
@@ -99,6 +116,8 @@ export abstract class IMutation {
     abstract updatePasword(_id: string, oldPass: string, newPass: string): boolean | Promise<boolean>;
 
     abstract lockUSer(_id: string): boolean | Promise<boolean>;
+
+    abstract lockUSerAcc(_id: string): boolean | Promise<boolean>;
 
     abstract setRole(_id: string, code: string): boolean | Promise<boolean>;
 
@@ -124,6 +143,17 @@ export class Pet {
     isActive: boolean;
 }
 
+export class Product {
+    _id: string;
+    name: string;
+    description: string;
+    price: number;
+    amount: number;
+    type: string;
+    urlImg: string;
+    isActive: boolean;
+}
+
 export abstract class IQuery {
     abstract permissions(): Permission[] | Promise<Permission[]>;
 
@@ -134,6 +164,12 @@ export abstract class IQuery {
     abstract pet(_id: string): Pet | Promise<Pet>;
 
     abstract petByOwner(owner: string): Pet[] | Promise<Pet[]>;
+
+    abstract products(): Product[] | Promise<Product[]>;
+
+    abstract product(_id: string): Product | Promise<Product>;
+
+    abstract productByType(type: string): Product[] | Promise<Product[]>;
 
     abstract roles(): Role[] | Promise<Role[]>;
 

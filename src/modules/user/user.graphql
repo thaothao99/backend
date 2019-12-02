@@ -61,6 +61,7 @@ type Mutation {
   login(input: LoginUserInput!): LoginResponse! 
   updatePasword(_id: String!, oldPass: String!, newPass: String!): Boolean! @isAuthenticated
   lockUSer(_id: String!): Boolean! @hasRole(code: "ADMIN")
+  lockUSerAcc(_id: String!): Boolean! @hasRole(code: "EMPLOYEE")
   setRole(_id: String!, code: String!): Boolean! @hasRole(code: "ADMIN")
   updateUrlImg(_id: String!, urlImg: String!): Boolean! @isAuthenticated
 }

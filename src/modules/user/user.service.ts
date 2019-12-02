@@ -69,6 +69,18 @@ export class UserService {
     existedUser.isLock = !existedUser.isLock
     return (await this.userRepository.save(existedUser)) ? true : false
   }
+  async lockUserAcc(_id: string): Promise<boolean> {
+    const message = 'Not Found: User'
+    const existedUser = await this.userRepository.findOne({ _id, isActive: true })
+    if (!existedUser) {
+			throw new Error(message)
+    }
+    if(existedUser.role.code !== 'USER'){
+      throw new Error('You can lock or unclock this account')
+    }
+    existedUser.isLock = !existedUser.isLock
+    return (await this.userRepository.save(existedUser)) ? true : false
+  }
   async deleteAll(): Promise<boolean> {
     return (await this.userRepository.deleteMany({})) ? true : false;
   }

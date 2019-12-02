@@ -1,0 +1,29 @@
+type Product {
+  _id: ID!
+  name: String!
+  description: String!
+  price: Int!
+  amount: Int!
+  type: String!
+  urlImg: String!
+  isActive: Boolean!
+}
+input ProductInput {
+  name: String!
+  description: String!
+  price: Int!
+  amount: Int!
+  urlImg: String
+  type: String!
+}
+type Query {
+  products: [Product!]! 
+  product(_id: String!): Product!
+  productByType(type: String!): [Product!]!
+}
+type Mutation {
+  createProduct(input: ProductInput!): Product! @hasRole(code: "ADMIN")
+  updateAmount(_id: String!, amount: Int!): Boolean! @hasRole(code: "EMPLOYEE")
+  updateProduct(_id: String, input: ProductInput): Boolean! @hasRole(code: "ADMIN")
+  deleteProduct(_id: String): Boolean! @hasRole(code: "ADMIN")
+}
