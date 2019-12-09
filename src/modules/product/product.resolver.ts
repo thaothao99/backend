@@ -17,8 +17,21 @@ export class ProductResolver {
     private readonly productRepository: MongoRepository<Product>
   ){}
   @Query('products')
-  async products( ){
-    return this.productRepository.find({isActive: true})
+  async products(@Args('type') type: string, @Args('inputSearch') inputSearch: string ){
+
+    const conditional = { isActive: true }
+    if (type) {
+      conditional['type']=type
+    }
+
+    if (inputSearch) {
+      conditional['name']= { $regex: new RegExp(inputSearch,'gi') }
+    }
+
+    return await this.productRepository.find({
+        where: conditional
+      })
+    
   }
   @Query('product')
   async product(@Args('_id') _id: string): Promise<Product> {

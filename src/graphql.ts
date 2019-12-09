@@ -165,7 +165,7 @@ export abstract class IQuery {
 
     abstract petByOwner(owner: string): Pet[] | Promise<Pet[]>;
 
-    abstract products(): Product[] | Promise<Product[]>;
+    abstract products(type?: string, inputSearch?: string): Product[] | Promise<Product[]>;
 
     abstract product(_id: string): Product | Promise<Product>;
 

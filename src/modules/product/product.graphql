@@ -17,7 +17,7 @@ input ProductInput {
   type: String!
 }
 type Query {
-  products: [Product!]! 
+  products(type: String, inputSearch: String): [Product!]! 
   product(_id: String!): Product!
   productByType(type: String!): [Product!]!
 }
