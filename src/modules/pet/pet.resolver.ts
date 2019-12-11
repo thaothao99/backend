@@ -16,8 +16,20 @@ export class PetResolver {
   ) {}
   
   @Query('pets')
-  async pets() {
-    return this.petRepository.find({isActive: true})
+  async pets(@Args('species') species: string, @Args('inputSearch') inputSearch: string ) {
+    const conditional = { isActive: true }
+    if (species) {
+      conditional['species']=species
+    }
+
+    if (inputSearch) {
+      conditional['name']= { $regex: new RegExp(inputSearch,'gi') }
+    }
+
+    return await this.petRepository.find({
+        where: conditional
+      })
+
   }
 
   @Query('pet')
@@ -39,8 +51,21 @@ export class PetResolver {
 		}
   }
   @Query('petByOwner')
-  async petByOwner(@Args('owner') owner: string) {
-    return this.petRepository.find({owner, isActive: true})
+  async petByOwner(@Args('owner') owner: string, @Args('species') species: string, @Args('inputSearch') inputSearch: string) {
+    const conditional = { isActive: true }
+    conditional['owner'] = owner
+    if (species) {
+      conditional['species']=species
+    }
+
+    if (inputSearch) {
+      conditional['name']= { $regex: new RegExp(inputSearch,'gi') }
+    }
+
+    return await this.petRepository.find({
+        where: conditional
+      })
+
   }
   @Mutation('createPet')
   async createPet(@Args('input') input: PetInput): Promise<Pet> {

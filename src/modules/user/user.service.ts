@@ -16,13 +16,25 @@ export class UserService {
   async findAll(): Promise<User[]> {
     return await this.userRepository.find({isActive: true});
   }
-  async findCustomers(): Promise<User[]> {
-    const role = await getMongoRepository(Role).findOne({code: 'USER'})
-    return await this.userRepository.find({isActive: true, role})
+  async findCustomers(inputSearch: string): Promise<User[]> {
+    const conditional = { isActive: true }
+    // conditional['role'] = await getMongoRepository(Role).findOne({code: 'USER'})
+    conditional['role.code'] = 'USER'
+    if(inputSearch){
+      conditional['username'] = { $regex: new RegExp(inputSearch,'gi') }
+    }
+    return await this.userRepository.find({ where: conditional})
   }
-  async findEmployees(): Promise<User[]> {
-    const role = await getMongoRepository(Role).findOne({code: 'EMPLOYEE'})
-    return await this.userRepository.find({isActive: true, role})
+  async findEmployees(inputSearch: string): Promise<User[]> {
+    const conditional = { isActive: true }
+    // conditional['role'] = await getMongoRepository(Role).findOne({code: 'EMPLOYEE'})
+    conditional['role.code'] = 'EMPLOYEE'
+
+    if(inputSearch){
+      conditional['username'] = { $regex: new RegExp(inputSearch,'gi') }
+    }
+    return await this.userRepository.find({ where: conditional})
+
   }
   async findById(_id: string): Promise<User> {
     return await this.userRepository.findOne({_id, isActive: true});
@@ -122,8 +134,7 @@ export class UserService {
     }
     const token = jwt.sign(
       { id: existedUser._id, username: existedUser.username },
-      process.env.JWT_SECRET,
-      { expiresIn: '1d' }
+      process.env.JWT_SECRET
     )
     return { token };
   }

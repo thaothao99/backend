@@ -159,11 +159,11 @@ export abstract class IQuery {
 
     abstract permission(_id: string): Permission | Promise<Permission>;
 
-    abstract pets(): Pet[] | Promise<Pet[]>;
+    abstract pets(species?: string, inputSearch?: string): Pet[] | Promise<Pet[]>;
 
     abstract pet(_id: string): Pet | Promise<Pet>;
 
-    abstract petByOwner(owner: string): Pet[] | Promise<Pet[]>;
+    abstract petByOwner(owner: string, species?: string, inputSearch?: string): Pet[] | Promise<Pet[]>;
 
     abstract products(type?: string, inputSearch?: string): Product[] | Promise<Product[]>;
 
@@ -183,9 +183,9 @@ export abstract class IQuery {
 
     abstract users(): User[] | Promise<User[]>;
 
-    abstract customers(): User[] | Promise<User[]>;
+    abstract customers(inputSearch?: string): User[] | Promise<User[]>;
 
-    abstract employees(): User[] | Promise<User[]>;
+    abstract employees(inputSearch?: string): User[] | Promise<User[]>;
 
     abstract user(_id: string): User | Promise<User>;
 

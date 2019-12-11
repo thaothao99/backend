@@ -42,8 +42,8 @@ input LoginUserInput {
 type Query {
   hello: String! @isAuthenticated
   users: [User!]! @isAuthenticated 
-  customers: [User!]! @isAuthenticated 
-  employees: [User!]! @isAuthenticated 
+  customers(inputSearch: String): [User!]! @isAuthenticated 
+  employees(inputSearch: String): [User!]! @isAuthenticated 
   user(_id: String!): User!
   me: User @isAuthenticated
 }

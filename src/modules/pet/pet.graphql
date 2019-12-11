@@ -26,9 +26,9 @@ input UpdatePetInput {
   urlImg: String
 }
 type Query {
-  pets: [Pet!]! @isAuthenticated
+  pets(species: String, inputSearch: String): [Pet!]! @isAuthenticated
   pet(_id: String!): Pet! @isAuthenticated
-  petByOwner(owner: String!): [Pet!]! @isAuthenticated
+  petByOwner(owner: String!, species: String, inputSearch: String ): [Pet!]! @isAuthenticated
 }
 type Mutation {
   createPet(input: PetInput!): Pet!  @isAuthenticated

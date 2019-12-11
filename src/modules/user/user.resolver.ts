@@ -20,12 +20,12 @@ export class UserResolver {
     return this.userService.findAll();
   }
   @Query(() => [User])
-  async customers() {
-    return this.userService.findCustomers();
+  async customers(@Args('inputSearch') inputSearch: string) {
+    return this.userService.findCustomers(inputSearch);
   }
   @Query(() => [User])
-  async employees() {
-    return this.userService.findEmployees();
+  async employees(@Args('inputSearch') inputSearch: string) {
+    return this.userService.findEmployees(inputSearch);
   }
 	@Query(() => User)
 	async user(@Args('_id') _id: string) {
