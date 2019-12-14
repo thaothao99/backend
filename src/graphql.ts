@@ -10,6 +10,13 @@ export class LoginUserInput {
     password: string;
 }
 
+export class OrderProductInput {
+    idUser: string;
+    idProduct: string;
+    amount: number;
+    date: string;
+}
+
 export class PermissionInput {
     code: string;
     name: string;
@@ -73,6 +80,14 @@ export class LoginResponse {
 }
 
 export abstract class IMutation {
+    abstract createOrderProduct(input: OrderProductInput): OrderProduct | Promise<OrderProduct>;
+
+    abstract updateAmountOrderProduct(_id: string, amount: number, date: string): boolean | Promise<boolean>;
+
+    abstract addBill(_id: string, idBillPro: string): boolean | Promise<boolean>;
+
+    abstract deleteOrderProduct(_id: string): boolean | Promise<boolean>;
+
     abstract createPermission(input: PermissionInput): Permission | Promise<Permission>;
 
     abstract updatePermission(_id: string, input: PermissionInput): boolean | Promise<boolean>;
@@ -124,6 +139,18 @@ export abstract class IMutation {
     abstract updateUrlImg(_id: string, urlImg: string): boolean | Promise<boolean>;
 }
 
+export class OrderProduct {
+    _id: string;
+    idBillPro?: string;
+    idUser: string;
+    product: Product;
+    amount: number;
+    total: number;
+    date: string;
+    inBill: boolean;
+    isActive: boolean;
+}
+
 export class Permission {
     _id: string;
     code: string;
@@ -155,6 +182,12 @@ export class Product {
 }
 
 export abstract class IQuery {
+    abstract orderProducts(idBillPro?: string): OrderProduct[] | Promise<OrderProduct[]>;
+
+    abstract orderProductByUser(idUser: string): OrderProduct[] | Promise<OrderProduct[]>;
+
+    abstract orderProduct(_id: string): OrderProduct | Promise<OrderProduct>;
+
     abstract permissions(): Permission[] | Promise<Permission[]>;
 
     abstract permission(_id: string): Permission | Promise<Permission>;
