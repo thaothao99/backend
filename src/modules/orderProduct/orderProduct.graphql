@@ -1,0 +1,39 @@
+type Product {
+  _id: ID!
+  name: String!
+  description: String!
+  price: Int!
+  amount: Int!
+  type: String!
+  urlImg: String!
+  isActive: Boolean!
+}
+type OrderProduct {
+  _id: ID!
+  idBillPro: String
+  idUser: String!
+  product: Product!
+  amount: Int!
+  total: Int!
+  date: String!
+  inBill: Boolean!
+  isActive: Boolean!
+}
+input OrderProductInput {
+  idUser: String!
+  idProduct: String!
+  amount: Int!
+  date: String!
+
+}
+type Query {
+  orderProducts(idBillPro: String): [OrderProduct!]!
+  orderProductByUser(idUser: String!): [OrderProduct!]!
+  orderProduct(_id: String!): OrderProduct!
+}
+type Mutation {
+  createOrderProduct(input: OrderProductInput!): OrderProduct!
+  updateAmountOrderProduct(_id: String!, amount: Int!, date: String!): Boolean!
+  addBill(_id: String!, idBillPro: String!): Boolean!
+  deleteOrderProduct(_id: String!): Boolean!
+}

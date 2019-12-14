@@ -4,15 +4,16 @@ import {
 	IsString,
 	IsNotEmpty,
   IsBoolean,
+	IsInt,
 } from 'class-validator'
 export class PetInput {
 	@IsString()
 	@IsNotEmpty()
 	name: string
 
-	@IsString()
+	@IsInt()
 	@IsNotEmpty()
-  age: string
+	age: string
   
   @IsString()
 	@IsNotEmpty()
@@ -32,40 +33,71 @@ export class PetInput {
 
   @IsString()
 	@IsNotEmpty()
-  health: string
+	health: string
+	
+	@IsString()
+	@IsNotEmpty()
+  urlImg: string
 }
+export class UpdatePetInput {
+
+	@IsInt()
+	@IsNotEmpty()
+	age: string
+  
+  @IsString()
+	@IsNotEmpty()
+	health: string
+	
+	@IsString()
+	@IsNotEmpty()
+  urlImg: string
+}
+
 @Entity()
 export class Pet {
 	@ObjectIdColumn()
 	_id: string
 
-  @IsString()
+	@Column()
+	@IsString()
 	@IsNotEmpty()
 	name: string
 
-	@IsString()
+	@Column()
+	@IsInt()
 	@IsNotEmpty()
-  age: string
-  
+	age: string
+	
+	@Column()
   @IsString()
 	@IsNotEmpty()
   gender: string
-
+	
+	@Column()
 	@IsString()
 	@IsNotEmpty()
   species: string
 
+	@Column()
 	@IsString()
 	@IsNotEmpty()
   breed: string
 
+	@Column()
 	@IsString()
 	@IsNotEmpty()
   owner: string
 
+	@Column()
   @IsString()
 	@IsNotEmpty()
   health: string
+	
+	@Column()
+  @IsString()
+	@IsNotEmpty()
+	urlImg: string
 	
   @Column()
 	@IsBoolean()

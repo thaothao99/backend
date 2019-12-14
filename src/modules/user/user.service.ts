@@ -16,7 +16,26 @@ export class UserService {
   async findAll(): Promise<User[]> {
     return await this.userRepository.find({isActive: true});
   }
+  async findCustomers(inputSearch: string): Promise<User[]> {
+    const conditional = { isActive: true }
+    // conditional['role'] = await getMongoRepository(Role).findOne({code: 'USER'})
+    conditional['role.code'] = 'USER'
+    if(inputSearch){
+      conditional['username'] = { $regex: new RegExp(inputSearch,'gi') }
+    }
+    return await this.userRepository.find({ where: conditional})
+  }
+  async findEmployees(inputSearch: string): Promise<User[]> {
+    const conditional = { isActive: true }
+    // conditional['role'] = await getMongoRepository(Role).findOne({code: 'EMPLOYEE'})
+    conditional['role.code'] = 'EMPLOYEE'
 
+    if(inputSearch){
+      conditional['username'] = { $regex: new RegExp(inputSearch,'gi') }
+    }
+    return await this.userRepository.find({ where: conditional})
+
+  }
   async findById(_id: string): Promise<User> {
     return await this.userRepository.findOne({_id, isActive: true});
   }
@@ -62,6 +81,18 @@ export class UserService {
     existedUser.isLock = !existedUser.isLock
     return (await this.userRepository.save(existedUser)) ? true : false
   }
+  async lockUserAcc(_id: string): Promise<boolean> {
+    const message = 'Not Found: User'
+    const existedUser = await this.userRepository.findOne({ _id, isActive: true })
+    if (!existedUser) {
+			throw new Error(message)
+    }
+    if(existedUser.role.code !== 'USER'){
+      throw new Error('You can lock or unclock this account')
+    }
+    existedUser.isLock = !existedUser.isLock
+    return (await this.userRepository.save(existedUser)) ? true : false
+  }
   async deleteAll(): Promise<boolean> {
     return (await this.userRepository.deleteMany({})) ? true : false;
   }
@@ -81,10 +112,14 @@ export class UserService {
   async updatePass(_id: string, oldPass: string, newPass: string): Promise<boolean> {
     const message = 'Not Found: User'
     const existedUser = await this.userRepository.findOne({ _id, isActive: true })
-    if (!existedUser || !(await existedUser.matchesPassword(oldPass))) {
+    if (!existedUser) {
 			throw new Error(message)
-		}
-    existedUser.password = newPass
+    }
+    if(!await(existedUser.matchesPassword(oldPass))){
+      throw new Error("Sai mật khẩu cũ")
+    }
+    console.log( await(existedUser.matchesPassword(oldPass)))
+    existedUser.password = await existedUser.hashPass(newPass)
     return (await this.userRepository.save(existedUser)) ? true : false
   }
   async login(input: LoginUserInput): Promise<LoginResponse> {
@@ -99,8 +134,7 @@ export class UserService {
     }
     const token = jwt.sign(
       { id: existedUser._id, username: existedUser.username },
-      process.env.JWT_SECRET,
-      { expiresIn: '1d' }
+      process.env.JWT_SECRET
     )
     return { token };
   }

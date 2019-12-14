@@ -1,5 +1,6 @@
 directive @isAuthenticated on FIELD | FIELD_DEFINITION
-directive @hasPermission(code: String) on FIELD | FIELD_DEFINITION
+directive @hasRole(code: String) on FIELD | FIELD_DEFINITION
+
 type Role {
   _id: ID!
   code: String!
@@ -40,7 +41,9 @@ input LoginUserInput {
 }
 type Query {
   hello: String! @isAuthenticated
-  users: [User!]! @isAuthenticated
+  users: [User!]! @isAuthenticated 
+  customers(inputSearch: String): [User!]! @isAuthenticated 
+  employees(inputSearch: String): [User!]! @isAuthenticated 
   user(_id: String!): User!
   me: User @isAuthenticated
 }
@@ -52,12 +55,13 @@ input UpdateUserInput {
 }
 type Mutation {
   createUser(input: UserInput!): User!
-  updateUser(_id: String!, input: UpdateUserInput!): Boolean! 
-  deleteUser(_id: String!): Boolean!  @hasPermission(code: "DELETE_USER") 
-  deleteAll: Boolean! @hasPermission(code: "DELETE_USER")
+  updateUser(_id: String!, input: UpdateUserInput!): Boolean! @isAuthenticated
+  deleteUser(_id: String!): Boolean! @hasRole(code: "ADMIN")
+  deleteAll: Boolean! @hasRole(code: "ADMIN")
   login(input: LoginUserInput!): LoginResponse! 
-  updatePasword(_id: String!, oldPass: String!, newPass: String!): Boolean! 
-  lockUSer(_id: String!): Boolean! @hasPermission(code: "LOCK_USER") 
-  setRole(_id: String!, code: String!): Boolean! @hasPermission(code: "ROLE_MANAGE")
-  updateUrlImg(_id: String!, urlImg: String!): Boolean!  
+  updatePasword(_id: String!, oldPass: String!, newPass: String!): Boolean! @isAuthenticated
+  lockUSer(_id: String!): Boolean! @hasRole(code: "ADMIN")
+  lockUSerAcc(_id: String!): Boolean! @hasRole(code: "EMPLOYEE")
+  setRole(_id: String!, code: String!): Boolean! @hasRole(code: "ADMIN")
+  updateUrlImg(_id: String!, urlImg: String!): Boolean! @isAuthenticated
 }

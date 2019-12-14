@@ -10,6 +10,13 @@ export class LoginUserInput {
     password: string;
 }
 
+export class OrderProductInput {
+    idUser: string;
+    idProduct: string;
+    amount: number;
+    date: string;
+}
+
 export class PermissionInput {
     code: string;
     name: string;
@@ -17,12 +24,22 @@ export class PermissionInput {
 
 export class PetInput {
     name: string;
-    age: string;
+    age: number;
     gender: string;
     species: string;
     breed: string;
     owner: string;
     health: string;
+    urlImg?: string;
+}
+
+export class ProductInput {
+    name: string;
+    description: string;
+    price: number;
+    amount: number;
+    urlImg?: string;
+    type: string;
 }
 
 export class RoleInput {
@@ -33,6 +50,12 @@ export class RoleInput {
 export class RolePermissionInput {
     idRole: string;
     idPermission: string;
+}
+
+export class UpdatePetInput {
+    age: number;
+    health: string;
+    urlImg?: string;
 }
 
 export class UpdateUserInput {
@@ -57,6 +80,14 @@ export class LoginResponse {
 }
 
 export abstract class IMutation {
+    abstract createOrderProduct(input: OrderProductInput): OrderProduct | Promise<OrderProduct>;
+
+    abstract updateAmountOrderProduct(_id: string, amount: number, date: string): boolean | Promise<boolean>;
+
+    abstract addBill(_id: string, idBillPro: string): boolean | Promise<boolean>;
+
+    abstract deleteOrderProduct(_id: string): boolean | Promise<boolean>;
+
     abstract createPermission(input: PermissionInput): Permission | Promise<Permission>;
 
     abstract updatePermission(_id: string, input: PermissionInput): boolean | Promise<boolean>;
@@ -67,7 +98,15 @@ export abstract class IMutation {
 
     abstract deletePet(_id: string): boolean | Promise<boolean>;
 
-    abstract updatePet(_id: string, input: PetInput): boolean | Promise<boolean>;
+    abstract updatePet(_id: string, input: UpdatePetInput): boolean | Promise<boolean>;
+
+    abstract createProduct(input: ProductInput): Product | Promise<Product>;
+
+    abstract updateAmount(_id: string, amount: number): boolean | Promise<boolean>;
+
+    abstract updateProduct(_id?: string, input?: ProductInput): boolean | Promise<boolean>;
+
+    abstract deleteProduct(_id?: string): boolean | Promise<boolean>;
 
     abstract createRole(input: RoleInput): Role | Promise<Role>;
 
@@ -93,9 +132,23 @@ export abstract class IMutation {
 
     abstract lockUSer(_id: string): boolean | Promise<boolean>;
 
+    abstract lockUSerAcc(_id: string): boolean | Promise<boolean>;
+
     abstract setRole(_id: string, code: string): boolean | Promise<boolean>;
 
     abstract updateUrlImg(_id: string, urlImg: string): boolean | Promise<boolean>;
+}
+
+export class OrderProduct {
+    _id: string;
+    idBillPro?: string;
+    idUser: string;
+    product: Product;
+    amount: number;
+    total: number;
+    date: string;
+    inBill: boolean;
+    isActive: boolean;
 }
 
 export class Permission {
@@ -107,25 +160,49 @@ export class Permission {
 export class Pet {
     _id: string;
     name: string;
-    age: string;
+    age: number;
     gender: string;
     species: string;
     breed: string;
     owner: string;
     health: string;
+    urlImg?: string;
+    isActive: boolean;
+}
+
+export class Product {
+    _id: string;
+    name: string;
+    description: string;
+    price: number;
+    amount: number;
+    type: string;
+    urlImg: string;
     isActive: boolean;
 }
 
 export abstract class IQuery {
+    abstract orderProducts(idBillPro?: string): OrderProduct[] | Promise<OrderProduct[]>;
+
+    abstract orderProductByUser(idUser: string): OrderProduct[] | Promise<OrderProduct[]>;
+
+    abstract orderProduct(_id: string): OrderProduct | Promise<OrderProduct>;
+
     abstract permissions(): Permission[] | Promise<Permission[]>;
 
     abstract permission(_id: string): Permission | Promise<Permission>;
 
-    abstract pets(): Pet[] | Promise<Pet[]>;
+    abstract pets(species?: string, inputSearch?: string): Pet[] | Promise<Pet[]>;
 
     abstract pet(_id: string): Pet | Promise<Pet>;
 
-    abstract petByOwner(owner: string): Pet[] | Promise<Pet[]>;
+    abstract petByOwner(owner: string, species?: string, inputSearch?: string): Pet[] | Promise<Pet[]>;
+
+    abstract products(type?: string, inputSearch?: string): Product[] | Promise<Product[]>;
+
+    abstract product(_id: string): Product | Promise<Product>;
+
+    abstract productByType(type: string): Product[] | Promise<Product[]>;
 
     abstract roles(): Role[] | Promise<Role[]>;
 
@@ -138,6 +215,10 @@ export abstract class IQuery {
     abstract hello(): string | Promise<string>;
 
     abstract users(): User[] | Promise<User[]>;
+
+    abstract customers(inputSearch?: string): User[] | Promise<User[]>;
+
+    abstract employees(inputSearch?: string): User[] | Promise<User[]>;
 
     abstract user(_id: string): User | Promise<User>;
 

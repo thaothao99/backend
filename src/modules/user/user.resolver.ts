@@ -19,7 +19,14 @@ export class UserResolver {
   async users() {
     return this.userService.findAll();
   }
-
+  @Query(() => [User])
+  async customers(@Args('inputSearch') inputSearch: string) {
+    return this.userService.findCustomers(inputSearch);
+  }
+  @Query(() => [User])
+  async employees(@Args('inputSearch') inputSearch: string) {
+    return this.userService.findEmployees(inputSearch);
+  }
 	@Query(() => User)
 	async user(@Args('_id') _id: string) {
 		try {
@@ -46,6 +53,10 @@ export class UserResolver {
   @Mutation(() => User)
   async lockUSer(@Args('_id') _id: string) {
     return await this.userService.lockUser(_id);
+  }
+  @Mutation(() => User)
+  async lockUSerAcc(@Args('_id') _id: string) {
+    return await this.userService.lockUserAcc(_id);
   }
   @Mutation(() => User)
   async updateUser(@Args('_id') _id: string, @Args('input') input: UpdateUserInput) {

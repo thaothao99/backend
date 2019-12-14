@@ -142,9 +142,12 @@ export class User {
   async b4register() {
 		this.isLock = false
     this._id = uuid.v1()
-    this.password = bcrypt.hashSync(this.password, 8);
+    this.password = await this.hashPass(this.password)
 		this.isActive = true
-  }
+	}
+	async hashPass(password) {
+		return await bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+	}
   async matchesPassword(password) {
 		return await bcrypt.compareSync(password, this.password)
 	}
