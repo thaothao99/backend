@@ -69,7 +69,7 @@ export class ProductResolver {
     product.amount = amount
     product.price = price
     product.type = type
-    product.urlImg =  "http://40.117.97.121/files/"+urlImg 
+    product.urlImg =  process.env.POST_IMG +"/files/"+urlImg 
     return await this.productRepository.save(product)
   }
   @Mutation('deleteProduct')
@@ -108,7 +108,7 @@ export class ProductResolver {
       product.amount = amount
       product.price = price
       product.type = type
-      product.urlImg = urlImg ?  "http://40.117.97.121/files/"+urlImg : product.urlImg
+      product.urlImg = urlImg ?  process.env.POST_IMG +"/files/"+urlImg : product.urlImg
       return await this.productRepository.save(product) ? true : false
 		} catch (error) {
 			throw new ApolloError(error, '500', {})

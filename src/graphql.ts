@@ -5,6 +5,14 @@
  */
 
 /* tslint:disable */
+export class BillProductInput {
+    total: number;
+    address: string;
+    note: string;
+    date: string;
+    phone: string;
+}
+
 export class LoginUserInput {
     username: string;
     password: string;
@@ -15,11 +23,7 @@ export class OrderProductInput {
     idProduct: string;
     amount: number;
     date: string;
-}
-
-export class PermissionInput {
-    code: string;
-    name: string;
+    idBillPro: string;
 }
 
 export class PetInput {
@@ -47,11 +51,6 @@ export class RoleInput {
     name: string;
 }
 
-export class RolePermissionInput {
-    idRole: string;
-    idPermission: string;
-}
-
 export class UpdatePetInput {
     age: number;
     health: string;
@@ -75,24 +74,34 @@ export class UserInput {
     address: string;
 }
 
+export class BillProduct {
+    _id: string;
+    idUser?: string;
+    total?: number;
+    satus?: string;
+    address?: string;
+    phone?: string;
+    note?: string;
+    date?: string;
+    isActive?: boolean;
+}
+
 export class LoginResponse {
     token: string;
 }
 
 export abstract class IMutation {
+    abstract updateBillProduct(_id: string, input: BillProductInput): BillProduct | Promise<BillProduct>;
+
+    abstract createBillProductDefault(idUser: string, date: string): BillProduct | Promise<BillProduct>;
+
+    abstract updateStatusBillPro(_id: string, status: string, date: string): boolean | Promise<boolean>;
+
     abstract createOrderProduct(input: OrderProductInput): OrderProduct | Promise<OrderProduct>;
 
     abstract updateAmountOrderProduct(_id: string, amount: number, date: string): boolean | Promise<boolean>;
 
-    abstract addBill(_id: string, idBillPro: string): boolean | Promise<boolean>;
-
     abstract deleteOrderProduct(_id: string): boolean | Promise<boolean>;
-
-    abstract createPermission(input: PermissionInput): Permission | Promise<Permission>;
-
-    abstract updatePermission(_id: string, input: PermissionInput): boolean | Promise<boolean>;
-
-    abstract deletePermission(_id: string): boolean | Promise<boolean>;
 
     abstract createPet(input: PetInput): Pet | Promise<Pet>;
 
@@ -113,10 +122,6 @@ export abstract class IMutation {
     abstract updateRole(_id: string, input: RoleInput): boolean | Promise<boolean>;
 
     abstract deleteRole(_id: string): boolean | Promise<boolean>;
-
-    abstract createRolePermission(input: RolePermissionInput): RolePermission | Promise<RolePermission>;
-
-    abstract deleteRolePermission(_id: string): boolean | Promise<boolean>;
 
     abstract createUser(input: UserInput): User | Promise<User>;
 
@@ -141,20 +146,13 @@ export abstract class IMutation {
 
 export class OrderProduct {
     _id: string;
-    idBillPro?: string;
+    idBillPro: string;
     idUser: string;
     product: Product;
     amount: number;
     total: number;
     date: string;
-    inBill: boolean;
     isActive: boolean;
-}
-
-export class Permission {
-    _id: string;
-    code: string;
-    name: string;
 }
 
 export class Pet {
@@ -182,15 +180,17 @@ export class Product {
 }
 
 export abstract class IQuery {
+    abstract billProducts(status?: string, idUser?: string, date?: string): BillProduct[] | Promise<BillProduct[]>;
+
+    abstract billProduct(_id?: string): BillProduct | Promise<BillProduct>;
+
+    abstract billProductsNotIsActive(): BillProduct[] | Promise<BillProduct[]>;
+
+    abstract billProductByUser(idUser: string): string | Promise<string>;
+
     abstract orderProducts(idBillPro?: string): OrderProduct[] | Promise<OrderProduct[]>;
 
-    abstract orderProductByUser(idUser: string): OrderProduct[] | Promise<OrderProduct[]>;
-
     abstract orderProduct(_id: string): OrderProduct | Promise<OrderProduct>;
-
-    abstract permissions(): Permission[] | Promise<Permission[]>;
-
-    abstract permission(_id: string): Permission | Promise<Permission>;
 
     abstract pets(species?: string, inputSearch?: string): Pet[] | Promise<Pet[]>;
 
@@ -207,10 +207,6 @@ export abstract class IQuery {
     abstract roles(): Role[] | Promise<Role[]>;
 
     abstract role(_id: string): Role | Promise<Role>;
-
-    abstract rolePermissions(): RolePermission[] | Promise<RolePermission[]>;
-
-    abstract rolePermission(_id: string): RolePermission | Promise<RolePermission>;
 
     abstract hello(): string | Promise<string>;
 
@@ -229,12 +225,6 @@ export class Role {
     _id: string;
     code: string;
     name: string;
-}
-
-export class RolePermission {
-    _id: string;
-    idRole: string;
-    idPermission: string;
 }
 
 export class User {

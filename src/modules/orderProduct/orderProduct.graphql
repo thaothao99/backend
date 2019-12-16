@@ -10,13 +10,12 @@ type Product {
 }
 type OrderProduct {
   _id: ID!
-  idBillPro: String
+  idBillPro: String!
   idUser: String!
   product: Product!
   amount: Int!
   total: Int!
   date: String!
-  inBill: Boolean!
   isActive: Boolean!
 }
 input OrderProductInput {
@@ -24,16 +23,15 @@ input OrderProductInput {
   idProduct: String!
   amount: Int!
   date: String!
+  idBillPro: String!
 
 }
 type Query {
   orderProducts(idBillPro: String): [OrderProduct!]!
-  orderProductByUser(idUser: String!): [OrderProduct!]!
   orderProduct(_id: String!): OrderProduct!
 }
 type Mutation {
   createOrderProduct(input: OrderProductInput!): OrderProduct!
   updateAmountOrderProduct(_id: String!, amount: Int!, date: String!): Boolean!
-  addBill(_id: String!, idBillPro: String!): Boolean!
   deleteOrderProduct(_id: String!): Boolean!
 }
