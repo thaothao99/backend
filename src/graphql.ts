@@ -6,11 +6,11 @@
 
 /* tslint:disable */
 export class BillProductInput {
-    total: number;
     address: string;
     note: string;
     date: string;
     phone: string;
+    total: number;
 }
 
 export class LoginUserInput {
@@ -91,7 +91,7 @@ export class LoginResponse {
 }
 
 export abstract class IMutation {
-    abstract updateBillProduct(_id: string, input: BillProductInput): BillProduct | Promise<BillProduct>;
+    abstract updateBillProduct(_id: string, input: BillProductInput): boolean | Promise<boolean>;
 
     abstract createBillProductDefault(idUser: string, date: string): BillProduct | Promise<BillProduct>;
 

@@ -10,11 +10,11 @@ type BillProduct {
   isActive : Boolean
 }
 input BillProductInput{
-  total: Int!
   address: String!
   note: String!
   date: String!
   phone: String!
+  total: Int!
 }
 type Query {
   billProducts(status: String, idUser: String, date: String): [BillProduct!]!
@@ -24,7 +24,7 @@ type Query {
 }
 
 type Mutation {
-  updateBillProduct(_id: String!, input: BillProductInput!): BillProduct!
+  updateBillProduct(_id: String!, input: BillProductInput!): Boolean!
   createBillProductDefault(idUser: String!, date: String!): BillProduct!
   updateStatusBillPro(_id: String!, status: String!, date: String!): Boolean!
 }

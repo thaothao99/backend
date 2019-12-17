@@ -62,27 +62,25 @@ export class BillProductResolver {
       return a._id
   }
   @Mutation('updateBillProduct')
-  async updateBillProduct(@Args('_id') _id: string, @Args('input') input: BillProductInput): Promise<BillProduct> {
+  async updateBillProduct(@Args('_id') _id: string, @Args('input') input: BillProductInput): Promise<boolean> {
     try {
 			const message = 'Not Found: billProduct'
 			const code = '404'
 			const additionalProperties = {}
-
 			const a = await this.billProRes.findOne({_id})
 
 			if (!a) {
 				throw new ApolloError(message, code, additionalProperties)
-			}
-      const {idUser, total, address, note, date, phone} = input
-      a.idUser= idUser
-      a.total = total 
+      }
+      const {address, note, date, phone, total} = input
       a.address = address
       a.note = note
       a.date = date
       a.phone = phone
-
+      a.total=total
+      a.status = "Đặt hàng thành công"
       a.isActive = true
-      return (await this.billProRes.save(a))
+      return (await this.billProRes.save(a)) ? true : false
 		} catch (error) {
 			throw new ApolloError(error, '500', {})
 		}

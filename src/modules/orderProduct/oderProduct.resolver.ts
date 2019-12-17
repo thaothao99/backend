@@ -51,6 +51,8 @@ export class OrderProductResolver {
     }
     const conditional = { isActive: true }
     conditional['product._id'] = idProduct
+    conditional['idBillPro'] = idBillPro
+
     const existed = await this.orderProRes.findOne({where: conditional})
     if(existed){
       if(product.amount === 0){

@@ -7,14 +7,7 @@ import {
   IsInt,
 } from 'class-validator'
 export class BillProductInput {
-  @IsString()
-	@IsNotEmpty()
-	idUser: string
 	
-  @IsInt()
-	@IsNotEmpty()
-  total: number
-
 	@IsString()
 	@IsNotEmpty()
   date: string
@@ -31,6 +24,9 @@ export class BillProductInput {
 	@IsNotEmpty()
   note: string
   
+  @IsInt()
+	@IsNotEmpty()
+  total: number
 }
 @Entity()
 export class BillProduct {
