@@ -78,7 +78,7 @@ export class BillProduct {
     _id: string;
     idUser?: string;
     total?: number;
-    satus?: string;
+    status?: string;
     address?: string;
     phone?: string;
     note?: string;

@@ -2,7 +2,7 @@ type BillProduct {
   _id: ID!
   idUser: String
   total: Int
-  satus: String
+  status: String
   address: String
   phone: String
   note: String

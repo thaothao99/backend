@@ -53,6 +53,7 @@ export class BillProduct {
 	@IsString()
 	@IsNotEmpty()
   address: string
+  
   @Column()
 	@IsString()
 	@IsNotEmpty()
