@@ -36,6 +36,7 @@
     "graphql-tools": "^4.0.5",
     "graphql-voyager": "^1.0.0-rc.28",
     "helmet": "^3.21.2",
+    "heroku": "^7.35.1",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.3.2",
     "multer": "^1.4.2",
