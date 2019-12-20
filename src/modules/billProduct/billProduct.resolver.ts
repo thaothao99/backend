@@ -12,6 +12,7 @@ import {Product} from '../product/product.entity'
 import {OrderProduct} from '../orderProduct/orderProduct.entity'
 import {OrderProductModule} from '../orderProduct/orderProduct.module'
 import uuid = require('uuid')
+import { stat } from 'fs'
 
 @Resolver('BillProduct')
 export class BillProductResolver {
@@ -108,7 +109,12 @@ export class BillProductResolver {
 			if (!a) {
 				throw new ApolloError(message, code, additionalProperties)
       }
-      
+      const date1 = new Date(date) 
+      const date2 =new Date(a.date)
+      const days = (date1.getTime() - date2.getTime())  / (1000 * 3600 * 24)
+      if( days>= 7){
+        throw new Error('Quá thời gian hủy đơn hàng')
+      }
       a.status = status
       a.date = date
       return await this.billProRes.save(a) ? true : false      

@@ -18,11 +18,10 @@ export class OrderProductResolver {
   ){}
   @Query('orderProducts')
   async oderProducts(@Args('idBillPro') idBillPro: string ){
-    const conditional = {isActive: true}
     if(idBillPro){
-      conditional['idBillPro']= idBillPro
+      return await this.orderProRes.find({idBillPro})
     }
-    return await this.orderProRes.find({where: conditional})
+    return await this.orderProRes.find()
   }
   @Query('orderProduct')
   async orderProduct(@Args('_id') _id: string): Promise<OrderProduct> {

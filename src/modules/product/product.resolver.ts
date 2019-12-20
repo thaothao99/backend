@@ -122,7 +122,6 @@ export class ProductResolver {
 			const additionalProperties = {}
 
 			const product = await this.productRepository.findOne({_id})
-      console.log(amount)
 			if (!product) {
 				throw new ApolloError(message, code, additionalProperties)
 			}

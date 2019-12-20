@@ -1,0 +1,14 @@
+type Service {
+  _id: ID!
+  name: String!
+  price: Int!
+  amount: Int!
+}
+type Query {
+  Service(_id: String!): Service!
+  Services: [Service!]!
+}
+type Mutation {
+  createService(name: String!, price: String!, amount: String!): Boolean!
+  updateService(name: String!, price: String!, amount: String!): Boolean!
+}

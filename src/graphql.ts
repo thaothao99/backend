@@ -123,6 +123,10 @@ export abstract class IMutation {
 
     abstract deleteRole(_id: string): boolean | Promise<boolean>;
 
+    abstract createService(name: string, price: string, amount: string): boolean | Promise<boolean>;
+
+    abstract updateService(name: string, price: string, amount: string): boolean | Promise<boolean>;
+
     abstract createUser(input: UserInput): User | Promise<User>;
 
     abstract updateUser(_id: string, input: UpdateUserInput): boolean | Promise<boolean>;
@@ -208,6 +212,10 @@ export abstract class IQuery {
 
     abstract role(_id: string): Role | Promise<Role>;
 
+    abstract Service(_id: string): Service | Promise<Service>;
+
+    abstract Services(): Service[] | Promise<Service[]>;
+
     abstract hello(): string | Promise<string>;
 
     abstract users(): User[] | Promise<User[]>;
@@ -225,6 +233,13 @@ export class Role {
     _id: string;
     code: string;
     name: string;
+}
+
+export class Service {
+    _id: string;
+    name: string;
+    price: number;
+    amount: number;
 }
 
 export class User {
