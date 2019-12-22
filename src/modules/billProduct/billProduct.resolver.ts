@@ -112,7 +112,7 @@ export class BillProductResolver {
       const date1 = new Date(date) 
       const date2 =new Date(a.date)
       const days = (date1.getTime() - date2.getTime())  / (1000 * 3600 * 24)
-      if( days>= 7){
+      if( days>= 7 && status==="Đã hủy"){
         throw new Error('Quá thời gian hủy đơn hàng')
       }
       a.status = status

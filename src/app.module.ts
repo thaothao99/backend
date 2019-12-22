@@ -21,6 +21,8 @@ import { join } from 'path';
 import { ProductModule } from './modules/product/product.module';
 import { OrderProductModule } from './modules/orderProduct/orderProduct.module';
 import { BillProductModule } from './modules/billProduct/billProduct.module';
+import { ServiceModule } from './modules/service/service.module';
+import { BillServicetModule } from './modules/billService/billService.module';
 
 const directiveResolvers = {
   isAuthenticated: (next, source, args, ctx) => {
@@ -134,7 +136,9 @@ const directiveResolvers = {
     PetModule,
     ProductModule,
     OrderProductModule,
-    BillProductModule
+    BillProductModule,
+    ServiceModule,
+    BillServicetModule
     
   ],
   controllers: [AppController],

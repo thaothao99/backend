@@ -5,10 +5,14 @@ type Service {
   amount: Int!
 }
 type Query {
-  Service(_id: String!): Service!
-  Services: [Service!]!
+  service(name: String!): Service!
+  services: [Service!]!
+  minAmount: Int!
+  totalCombo1: Int!
+  totalCombo2: Int!
 }
 type Mutation {
-  createService(name: String!, price: String!, amount: String!): Boolean!
-  updateService(name: String!, price: String!, amount: String!): Boolean!
+  createService(name: String!, price: Int!, amount: Int!): Service!
+  updateService(_id: String!, price: Int!, amount: Int!): Boolean!  @hasRole(code: "ADMIN")
+  updateAmountService(_id: String!, amount: Int!): Boolean! @hasRole(code: "EMPLOYEE")
 }

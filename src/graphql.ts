@@ -13,6 +13,14 @@ export class BillProductInput {
     total: number;
 }
 
+export class BillServiceInput {
+    idUser: string;
+    idPet: string;
+    nameService: string;
+    date: string;
+    total: number;
+}
+
 export class LoginUserInput {
     username: string;
     password: string;
@@ -86,6 +94,16 @@ export class BillProduct {
     isActive?: boolean;
 }
 
+export class BillService {
+    _id: string;
+    idUser: string;
+    idPet: string;
+    nameService: string;
+    date: string;
+    total: number;
+    status: string;
+}
+
 export class LoginResponse {
     token: string;
 }
@@ -96,6 +114,10 @@ export abstract class IMutation {
     abstract createBillProductDefault(idUser: string, date: string): BillProduct | Promise<BillProduct>;
 
     abstract updateStatusBillPro(_id: string, status: string, date: string): boolean | Promise<boolean>;
+
+    abstract createbillService(input: BillServiceInput): BillService | Promise<BillService>;
+
+    abstract updateStatusBillSer(_id: string, status: string, date: string): boolean | Promise<boolean>;
 
     abstract createOrderProduct(input: OrderProductInput): OrderProduct | Promise<OrderProduct>;
 
@@ -123,9 +145,11 @@ export abstract class IMutation {
 
     abstract deleteRole(_id: string): boolean | Promise<boolean>;
 
-    abstract createService(name: string, price: string, amount: string): boolean | Promise<boolean>;
+    abstract createService(name: string, price: number, amount: number): Service | Promise<Service>;
 
-    abstract updateService(name: string, price: string, amount: string): boolean | Promise<boolean>;
+    abstract updateService(_id: string, price: number, amount: number): boolean | Promise<boolean>;
+
+    abstract updateAmountService(_id: string, amount: number): boolean | Promise<boolean>;
 
     abstract createUser(input: UserInput): User | Promise<User>;
 
@@ -192,6 +216,10 @@ export abstract class IQuery {
 
     abstract billProductByUser(idUser: string): string | Promise<string>;
 
+    abstract billService(_id: string): BillService | Promise<BillService>;
+
+    abstract billServices(status?: string, idUser?: string, date?: string): BillService[] | Promise<BillService[]>;
+
     abstract orderProducts(idBillPro?: string): OrderProduct[] | Promise<OrderProduct[]>;
 
     abstract orderProduct(_id: string): OrderProduct | Promise<OrderProduct>;
@@ -212,9 +240,15 @@ export abstract class IQuery {
 
     abstract role(_id: string): Role | Promise<Role>;
 
-    abstract Service(_id: string): Service | Promise<Service>;
+    abstract service(name: string): Service | Promise<Service>;
 
-    abstract Services(): Service[] | Promise<Service[]>;
+    abstract services(): Service[] | Promise<Service[]>;
+
+    abstract minAmount(): number | Promise<number>;
+
+    abstract totalCombo1(): number | Promise<number>;
+
+    abstract totalCombo2(): number | Promise<number>;
 
     abstract hello(): string | Promise<string>;
 
