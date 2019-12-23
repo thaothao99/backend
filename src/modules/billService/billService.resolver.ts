@@ -99,6 +99,9 @@ export class BillServiceResolver {
       if( days>= 7 && status === "Đã hủy"){
         throw new Error('Quá thời gian hủy đơn hàng')
       }
+      if(status === "Thanh toán thành công") {
+        await getMongoRepository(Service).updateOne({"name": a.nameService},  {$inc: { "amount": 1}})
+      }
       a.status = status
       a.date = date
       return await this.BillSerRes.save(a) ? true : false      
