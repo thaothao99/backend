@@ -84,7 +84,7 @@ export class PetResolver {
     pet.health = health
     pet.owner = owner
     pet.species = species
-    pet.urlImg = urlImg ? "http://40.117.97.121/files/"+urlImg : ''
+    pet.urlImg = urlImg ? process.env.POST_IMG +"/files/"+urlImg : ''
     return await this.petRepository.save(pet)
   }
 
@@ -121,7 +121,7 @@ export class PetResolver {
       const {age, health, urlImg} = input
       pet.age = age
       pet.health = health
-      pet.urlImg = urlImg ? "http://40.117.97.121/files/"+urlImg : pet.urlImg
+      pet.urlImg = urlImg ? process.env.POST_IMG +"/files/"+urlImg : pet.urlImg
       return await this.petRepository.save(pet) ? true : false
 		} catch (error) {
 			throw new ApolloError(error, '500', {})

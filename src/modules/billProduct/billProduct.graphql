@@ -1,0 +1,30 @@
+type BillProduct {
+  _id: ID!
+  idUser: String
+  total: Int
+  status: String
+  address: String
+  phone: String
+  note: String
+  date: String
+  isActive : Boolean
+}
+input BillProductInput{
+  address: String!
+  note: String!
+  date: String!
+  phone: String!
+  total: Int!
+}
+type Query {
+  billProducts(status: String, idUser: String, date: String): [BillProduct!]!
+  billProduct(_id: String): BillProduct!
+  billProductsNotIsActive: [BillProduct!]!
+  billProductByUser(idUser: String!): String!
+}
+
+type Mutation {
+  updateBillProduct(_id: String!, input: BillProductInput!): Boolean!
+  createBillProductDefault(idUser: String!, date: String!): BillProduct!
+  updateStatusBillPro(_id: String!, status: String!, date: String!): Boolean!
+}

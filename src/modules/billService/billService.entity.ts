@@ -3,55 +3,41 @@ import * as uuid from 'uuid';
 import {
 	IsString,
 	IsNotEmpty,
-  IsBoolean,
+  IsArray,
   IsInt,
 } from 'class-validator'
-import { Product } from '../product/product.entity';
-export class OrderProductInput {
-  @IsString()
-	@IsNotEmpty()
-	idUser: string
-
-  @IsString()
-	@IsNotEmpty()
-	idProduct: string
+export class BillServiceInput {
 	
-  @IsInt()
-	@IsNotEmpty()
-  amount: number
-
 	@IsString()
+	@IsNotEmpty()
+  idUser: string
+  
+  @IsString()
+	@IsNotEmpty()
+  idPet: string
+
+  @IsString()
+	@IsNotEmpty()
+  nameService: string
+  
+  @IsString()
 	@IsNotEmpty()
   date: string
   
-  @Column()
-	@IsString()
+  @IsInt()
 	@IsNotEmpty()
-	idBillPro: string
+  total: number
 }
 @Entity()
-export class OrderProduct {
+export class BillService {
   @ObjectIdColumn()
   _id: string
   
-  @Column()
-	@IsString()
-	@IsNotEmpty()
-	idBillPro: string
 
   @Column()
 	@IsString()
 	@IsNotEmpty()
   idUser: string
-  
-  @Column()
-	@IsNotEmpty()
-  product:Product
-
-  @Column()
-	@IsInt()
-	@IsNotEmpty()
-  amount: number
 
   @Column()
 	@IsInt()
@@ -61,16 +47,25 @@ export class OrderProduct {
   @Column()
 	@IsString()
 	@IsNotEmpty()
-  date: string
-  
-  @Column()
-	@IsBoolean()
-	@IsNotEmpty()
-  isActive: boolean
-  @BeforeInsert()
+  status: string
 
+  @Column()
+	@IsString()
+	@IsNotEmpty()
+  idPet: string
+
+  @Column()
+	@IsString()
+	@IsNotEmpty()
+  nameService: string
+
+  @Column()
+	@IsString()
+	@IsNotEmpty()
+  date: string
+
+  @BeforeInsert()
   async b4register() {
-    this._id = uuid.v1()
-    this.isActive = true
-	}
+    this._id = await uuid.v1()
+  }
 }

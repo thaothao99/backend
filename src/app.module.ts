@@ -16,14 +16,13 @@ import * as jwt from 'jsonwebtoken';
 import { getMongoRepository } from 'typeorm';
 import { User } from './modules/user/user.entity';
 import { RoleModule } from './modules/role/role.module';
-import { PermissionModule } from './modules/permission/permission.module';
-import { RolePermissionModule } from './modules/rolePermission/rolePermission.module';
-import { Permission } from './modules/permission/permission.entity';
-import { RolePermission } from './modules/rolePermission/rolePermission.entity';
 import { PetModule } from './modules/pet/pet.module';
 import { join } from 'path';
 import { ProductModule } from './modules/product/product.module';
 import { OrderProductModule } from './modules/orderProduct/orderProduct.module';
+import { BillProductModule } from './modules/billProduct/billProduct.module';
+import { ServiceModule } from './modules/service/service.module';
+import { BillServicetModule } from './modules/billService/billService.module';
 
 const directiveResolvers = {
   isAuthenticated: (next, source, args, ctx) => {
@@ -133,12 +132,13 @@ const directiveResolvers = {
     }), */
     UserModule,
     TypeormModule,
-    RoleModule,
-    PermissionModule,
-    RolePermissionModule,
+    RoleModule,    
     PetModule,
     ProductModule,
-    OrderProductModule
+    OrderProductModule,
+    BillProductModule,
+    ServiceModule,
+    BillServicetModule
     
   ],
   controllers: [AppController],

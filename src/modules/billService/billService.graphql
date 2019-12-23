@@ -1,0 +1,24 @@
+type BillService {
+  _id: ID!
+  idUser: String!
+  idPet: String!
+  nameService: String!
+  date: String!
+  total: Int! 
+  status: String!
+}
+input BillServiceInput {
+  idUser: String!
+  idPet: String!
+  nameService: String!
+  date: String!
+  total: Int!
+}
+type Query {
+  billService(_id: String!): BillService!
+  billServices(status: String, idUser: String, date: String): [BillService!]!
+}
+type Mutation {
+  createbillService(input: BillServiceInput!): BillService!
+  updateStatusBillSer(_id: String!, status: String!, date: String!): Boolean!
+}

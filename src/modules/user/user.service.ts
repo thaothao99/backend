@@ -157,7 +157,7 @@ export class UserService {
     if (!existedUser) {
 			throw new Error(message)
     }
-    existedUser.urlImg = "http://40.117.97.121/files/"+urlImg
+    existedUser.urlImg = process.env.POST_IMG +"/files/"+urlImg
     return (await this.userRepository.save(existedUser)) ? true : false
   }
 
